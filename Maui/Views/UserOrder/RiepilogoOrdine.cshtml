@@ -1,0 +1,53 @@
+﻿@model Maui.Models.Ordine
+@using System.Security.Claims;
+@{
+    ViewData["Title"] = "RiepilogoOrdine";
+    int idUtente = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+}
+<div class="divform">
+<h4>Ordine</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="RiepilogoOrdine">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="hidden" asp-for="IdUtente" class="form-control" value="@idUtente"></input>
+            </div>
+            <div class="form-group">
+                <label asp-for="IndirizzoDiConsegna" class="control-label"></label>
+                <input asp-for="IndirizzoDiConsegna" class="form-control" />
+                <span asp-validation-for="IndirizzoDiConsegna" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none;">
+                <label asp-for="DataOrdine" class="control-label"></label>
+                <input asp-for="DataOrdine" class="form-control" value="@DateTime.Now" readonly />
+                <span asp-validation-for="DataOrdine" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <input type="hidden" class="form-check-input" asp-for="IsEvaso" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Nota" class="control-label"></label>
+                <input asp-for="Nota" class="form-control" />
+             
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

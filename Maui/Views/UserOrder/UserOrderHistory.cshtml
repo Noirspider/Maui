@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Maui.Models.Ordine>
+
+    @{
+        ViewData["Title"] = "Cronologia Ordini";
+    }
+    
+    <div class="divform">
+
+<h4>
+  Cronologia Ordini
+</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IndirizzoDiConsegna)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataOrdine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsEvaso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nota)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrezzoTotale)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        
+
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndirizzoDiConsegna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataOrdine)
+            </td>
+            <td>
+                        @(item.IsEvaso ? "Evaso" : "Non Ancora Evaso")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nota)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrezzoTotale) €
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

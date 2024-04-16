@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Maui.Models.Prodotto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeProdotto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImgProdotto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrezzoProdotto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuantitaProdotto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descrizione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Volume)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gradazione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birrificio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nazione)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeProdotto)
+            </td>
+                <td>
+                    <img href="@item.ImgProdotto" alt="Immagine Prodotto" />
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrezzoProdotto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantitaProdotto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descrizione)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Volume)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gradazione)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Birrificio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nazione)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdProdotto">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdProdotto">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdProdotto">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

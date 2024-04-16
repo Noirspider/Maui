@@ -1,0 +1,143 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.img-fix{
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
+#Navbar {
+    background-color: #ffe0b8;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+    body{
+       
+        
+        background-attachment: fixed;
+
+    }
+.divform {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.divform2 {
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    transition: all 0.3s ease; /* Aggiungi una transizione per una transizione più fluida */
+}
+
+    .divform2:hover {
+        transform: scale(1.05); /* Effetto di ingrandimento al passaggio del mouse */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Aggiungi un'ombra sottile per evidenziare il contenuto */
+    }
+
+    .divform2 img {
+        border-radius: 10px;
+    }
+     
+
+/*    LOGIN PAGE */
+
+/* Stile per il form di login */
+.login-form {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+    .login-form h4 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .login-form hr {
+        border-color: #ddd;
+    }
+
+    .login-form .form-group {
+        margin-bottom: 20px;
+    }
+
+    .login-form input[type="submit"] {
+        width: 100%;
+    }
+
+    .login-form a {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #007bff;
+    }
+
+    /*prodotti */
+/* Stile specifico per le card dei prodotti */
+/* Stile per la card del prodotto */
+/* CSS dedicato per la lista dei prodotti */
+#listaProdotti .card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#listaProdotti .card-img-top {
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ccc;
+}
+
+#listaProdotti .card-body {
+    padding: 1rem;
+}
+
+#listaProdotti .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+#listaProdotti .card-text {
+    margin-bottom: 0.5rem;
+}
+
+#listaProdotti .btn {
+    font-size: 0.9rem;
+}
+#listaProdotti .img-product {
+    width: 200px; /* Imposta la larghezza desiderata */
+    height: 200px; /* Imposta l'altezza desiderata */
+    object-fit: cover; /* Assicura che l'immagine mantenga le proporzioni e riempia l'area specificata */
+}
+#listaProdotti .form-select {
+    width: 100px; /* Imposta la larghezza desiderata */
+}
+

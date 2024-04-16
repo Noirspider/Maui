@@ -1,0 +1,80 @@
+﻿<div>
+    <div class="d-flex justify-content-between">
+        <h2>Carrello</h2>
+        <a class="btn btn-success" asp-action="RiepilogoOrdine">Ordina</a>
+    </div>
+    <hr />
+    @{
+        if (Model != null)
+        {
+            decimal total = 0;
+            foreach (var item in Model)
+            {
+                <div class="card me-3 col-4">
+                    <img src="@item.ImgProdotto" class="img-fix card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @item.NomeProdotto
+                        </h5>
+                        <p class="card-text">@item.PrezzoProdotto €</p>
+                        <p class="card-text">Quantità: @item.Quantita </p>
+                        <p class="card-text">Stile: @item.Stile</p>
+<p class="card-text">Birrificio: @item.Birrificio</p>
+                        <input type="number" min="1" id="quantity-@item.IdProdotto" value="@item.Quantita" />
+                        <button onclick="updateQuantity(@item.IdProdotto)">Aggiorna quantità</button>
+                        <button onclick="removeFromCart(@item.IdProdotto)">Rimuovi</button>
+
+
+                    </div>
+                </div>
+                total += item.PrezzoProdotto * item.Quantita;
+            }
+            <div class="mt-3">
+                <h4>Totale: @total €</h4>
+            </div>
+        }
+        else
+        {
+            <p>Il carrello è vuoto</p>
+        }
+    }
+</div>
+
+<script>
+    function updateQuantity(idProdotto) {
+        var quantity = $('#quantity-' + idProdotto).val();
+
+        $.ajax({
+            url: '/UserOrder/UpdateQuantity',
+            type: 'POST',
+            data: {
+                idProdotto: idProdotto,
+                quantity: quantity
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (response) {
+                if (response.status == 400) {
+                    alert('Non ci sono abbastanza birre in magazzino.');
+                }
+            }
+        });
+    }
+
+
+    function removeFromCart(idProdotto) {
+        $.ajax({
+            url: '/UserOrder/RemoveFromCart',
+            type: 'POST',
+            data: {
+                idProdotto: idProdotto
+            },
+            success: function (response) {
+                location.reload();
+            }
+        });
+    }
+
+
+</script>

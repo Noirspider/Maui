@@ -1,0 +1,67 @@
+﻿@model Maui.Models.Ordine
+
+<div class="divform">
+    <div>
+        <h4>Ordine</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.IndirizzoDiConsegna)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.IndirizzoDiConsegna)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.DataOrdine)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.DataOrdine)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Nota)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Nota)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.PrezzoTotale)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.PrezzoTotale) @Html.Raw("&euro;")
+            </dd>
+        </dl>
+    </div>
+    <button class="btn btn-primary">
+        <a asp-action="Index" style="color: white; text-decoration:none">Effettua un altro ordine</a>
+    </button>
+    <h4>Prodotti</h4>
+    <hr />
+    @foreach (var prodotto in Model.ProdottiAcquistati)
+    {
+        <div>
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(modelItem => prodotto.Prodotto.NomeProdotto)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(modelItem => prodotto.Prodotto.NomeProdotto)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(modelItem => prodotto.Quantita)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(modelItem => prodotto.Quantita)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(modelItem => prodotto.Prodotto.PrezzoProdotto)
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(modelItem => prodotto.Prodotto.PrezzoProdotto) @Html.Raw("&euro;")
+                </dd>
+            </dl>
+        </div>
+    }
+</div>
+@section Scripts {
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

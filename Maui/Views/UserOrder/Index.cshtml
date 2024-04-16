@@ -1,0 +1,106 @@
+﻿@using Newtonsoft.Json;
+@model IEnumerable<Maui.Models.CartItem>
+@{
+    ViewData["Title"] = "User Order";
+}
+
+<div class="divform">
+    <main>
+        <div class="container">
+            <div class="row" id="listaProdotti">
+                <!-- Le card dei prodotti verranno aggiunte qui dinamicamente -->
+            </div>
+        </div>
+    </main>
+</div>
+
+
+@section Scripts {
+    <script>
+        async function FetchAddToCartSession(idProdotto, quantity) {
+            try {
+                const url = `UserOrder/FetchAddToCartSession?id=${idProdotto}&quantity=${quantity}`;
+                const response = await fetch(url);
+                if (response.ok) {
+                    location.reload();
+                } else if (response.status == 400) {
+                    alert('Non ci sono abbastanza birre in magazzino.');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        async function FetchRemoveFromCartSession(idProdotto) {
+            try {
+                const response = await fetch('UserOrder/FetchRemoveFromCartSession/' + idProdotto);
+                if (response.ok) {
+                    location.reload();
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        $(document).ready(function () {
+            async function FetchListaProdotti() {
+                const response = await fetch('UserOrder/FetchListaProdotti');
+                const data = await response.json();
+                console.log(data);
+
+                $('#listaProdotti').empty(); // Clear the existing content
+
+                data.forEach(product => {
+                    const card = $('<div>').addClass('col-md-4 my-3 d-flex justify-content-between card');
+
+                    const link = $('<a>').attr('href', 'UserOrder/Details/' + product.idProdotto);
+                    const img = $('<img>').attr('src', product.imgProdotto).addClass('img-fix card-img-top img-product').attr('alt', '...');
+                    link.append(img);
+                    card.append(link);
+
+                    const cardBody = $('<div>').addClass('card-body');
+                    card.append(cardBody);
+
+                    const title = $('<h5>').addClass('card-title');
+                    const linkTitle = $('<a>').attr('href', 'UserOrder/Details/' + product.idProdotto).text(product.nomeProdotto).addClass('text-decoration-none');
+                    title.append(linkTitle);
+                    cardBody.append(title);
+
+                    const price = $('<p>').addClass('card-text').text(product.prezzoProdotto + ' €');
+                    cardBody.append(price);
+
+                    const buttonAdd = $('<button>').addClass('btn btn-primary m-1').text('Aggiungi');
+                    const style = $('<p>').addClass('card-text').text('Stile: ' + product.stile);
+                    cardBody.append(style);
+
+                    const brewery = $('<p>').addClass('card-text').text('Birrificio: ' + product.birrificio);
+                    cardBody.append(brewery);
+
+                    const quantityInput = $('<select>').addClass('form-select');
+                    for (let i = 1; i <= 6; i++) {
+                        quantityInput.append($('<option>').attr('value', i).text(i));
+                    }
+                    cardBody.append(quantityInput);
+
+                    const buttonRemove = $('<button>').addClass('d-none').text('Rimuovi');
+
+                    buttonAdd.on('click', async function () {
+                        const quantity = quantityInput.val();
+                        FetchAddToCartSession(product.idProdotto, quantity);
+                    });
+                    buttonRemove.on('click', async function () {
+                        await FetchRemoveFromCartSession(product.idProdotto);
+                    });
+
+                    cardBody.append(buttonAdd);
+                    cardBody.append(buttonRemove);
+
+                    $('#listaProdotti').append(card);
+                });
+            }
+
+            FetchListaProdotti();
+        });
+
+    </script>
+}

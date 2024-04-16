@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "FetchAsincrone";
+}
+
+<div class="divform">
+<h1>FetchAsincrone</h1>
+<input type="date" id="date" />
+<h2 id="FetchNumeroTotaleOrdiniEvasi"></h2>
+<h2 id="FetchTotaleIncassoInData"></h2>
+</div>
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $("#date").change(function () {
+                let date = $("#date").val();
+                console.log(date);
+                let giorno = date.split("-")[2];
+                let mese = date.split("-")[1];
+                let anno = date.split("-")[0];
+
+                fetchNumerTotaleOrdiniEvasi(giorno, mese, anno);
+                FetchTotaleIncassoInData(giorno, mese, anno);
+            });
+
+            async function fetchNumerTotaleOrdiniEvasi(giorno, mese, anno) {
+                let response = await fetch(`/Home/FetchNumeroTotaleOrdiniEvasi?giorno=${giorno}&mese=${mese}&anno=${anno}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ giorno, mese, anno, })
+                });
+                let data = await response.json();
+                console.log(data);
+                $("#FetchNumeroTotaleOrdiniEvasi").text(`Numero totale ordini evasi: ${data}`);
+            }
+
+            async function FetchTotaleIncassoInData(giorno, mese, anno) {
+                let response = await fetch(`/Home/FetchTotaleIncassoInData?giorno=${giorno}&mese=${mese}&anno=${anno}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ giorno, mese, anno, })
+                });
+                let data = await response.json();
+                console.log(data);
+                $("#FetchTotaleIncassoInData").text(`Totale incasso: ${data} €`);
+            }
+
+        });
+    </script>
+}
