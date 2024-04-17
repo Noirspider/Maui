@@ -22,14 +22,14 @@ namespace Maui.Controllers
         {
             int id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var ordini = await _db
-                .Ordini.Include(o => o.Utente)
-                .Include(o => o.ProdottiAcquistati)
+            var ordine = await _db
+                .Ordine.Include(o => o.Utente)
+                .Include(o => o.ProdottoAcquistato)
                 .ThenInclude(p => p.Prodotto)
                 .Where(o => o.IdUtente == id)
                 .ToListAsync();
 
-            return View(ordini);
+            return View(ordine);
         }
 
         public IActionResult Index()
@@ -105,8 +105,7 @@ namespace Maui.Controllers
                     ImgProdotto = prodotto.ImgProdotto,
                     NomeProdotto = prodotto.NomeProdotto,
                     PrezzoProdotto = prodotto.PrezzoProdotto,
-                    Stile = prodotto.Stile,
-                    Birrificio = prodotto.Birrificio,
+                    QuantitaProdotto = prodotto.QuantitaProdotto,
                     Quantita = quantity
                 };
 
@@ -168,11 +167,11 @@ namespace Maui.Controllers
         )
         {
             ModelState.Remove("Utente");
-            ModelState.Remove("ProdottiAcquistati");
+            ModelState.Remove("ProdottoAcquistato");
 
             if (ModelState.IsValid)
             {
-                _db.Ordini.Add(ordine);
+                _db.Ordine.Add(ordine);
                 await _db.SaveChangesAsync();
 
                 List<CartItem> carrello = JsonConvert.DeserializeObject<List<CartItem>>(
@@ -184,9 +183,9 @@ namespace Maui.Controllers
                     {
                         IdOrdine = ordine.IdOrdine,
                         IdProdotto = item.IdProdotto,
-                        Quantita = item.Quantita
+                        Quantita = item.Quantita,
                     };
-                    _db.ProdottiAcquistati.Add(prodottoAcquistato);
+                    _db.ProdottoAcquistato.Add(prodottoAcquistato);
                 }
 
                 TempData["Success"] = "Ordine creato con successo";
@@ -212,8 +211,8 @@ namespace Maui.Controllers
             }
 
             var ordine = await _db
-                .Ordini.Include(o => o.Utente)
-                .Include(o => o.ProdottiAcquistati)
+                .Ordine.Include(o => o.Utente)
+                .Include(o => o.ProdottoAcquistato)
                 .ThenInclude(p => p.Prodotto)
                 .FirstOrDefaultAsync(m => m.IdOrdine == id);
 
@@ -224,7 +223,7 @@ namespace Maui.Controllers
 
             var totale = 0.0m;
 
-            foreach (var prodotto in ordine.ProdottiAcquistati)
+            foreach (var prodotto in ordine.ProdottoAcquistato)
             {
                 totale += prodotto.Prodotto.PrezzoProdotto * prodotto.Quantita;
             }

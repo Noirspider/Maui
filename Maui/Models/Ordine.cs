@@ -28,13 +28,13 @@ namespace Maui.Models
         {
             get
             {
-                if (ProdottiAcquistati == null)
+                if (ProdottoAcquistato == null)
                 {
                     return 0;
                 }
 
                 decimal prezzoTotale = 0;
-                foreach (var prodotto in ProdottiAcquistati)
+                foreach (var prodotto in ProdottoAcquistato)
                 {
                     prezzoTotale += prodotto.Prodotto.PrezzoProdotto;
                 }
@@ -44,6 +44,6 @@ namespace Maui.Models
         }
 
         public virtual Utente Utente { get; set; }
-        public virtual ICollection<ProdottoAcquistato> ProdottiAcquistati { get; set; }
+        public virtual ICollection<ProdottoAcquistato> ProdottoAcquistato { get; set; }
     }
 }

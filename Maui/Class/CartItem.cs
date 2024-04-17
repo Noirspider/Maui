@@ -7,9 +7,9 @@
         public string NomeProdotto { get; set; }
         public decimal PrezzoProdotto { get; set; }
         public string Stile { get; set; }
-
         public string Birrificio { get; set; }
         public int Quantita { get; set; }
+        public int QuantitaProdotto { get; internal set; }
     }
 
 }

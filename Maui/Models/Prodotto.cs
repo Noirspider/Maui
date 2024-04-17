@@ -26,7 +26,7 @@ namespace Maui.Models
         public string Birrificio { get; set; }
         public string Nazione { get; set; }
 
-        public virtual ICollection<ProdottoAcquistato> ProdottiAcquistati { get; set; }
+        public virtual ICollection<ProdottoAcquistato> ProdottoAcquistato { get; set; }
 
     }
 }

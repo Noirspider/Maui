@@ -1,44 +1,58 @@
 ﻿<div>
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between mb-3">
         <h2>Carrello</h2>
-        <a class="btn btn-success" asp-action="RiepilogoOrdine">Ordina</a>
     </div>
     <hr />
-    @{
-        if (Model != null)
+    <div class="row">
+        @if (Model != null)
         {
             decimal total = 0;
             foreach (var item in Model)
             {
-                <div class="card me-3 col-4">
-                    <img src="@item.ImgProdotto" class="img-fix card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            @item.NomeProdotto
-                        </h5>
-                        <p class="card-text">@item.PrezzoProdotto €</p>
-                        <p class="card-text">Quantità: @item.Quantita </p>
-                        <p class="card-text">Stile: @item.Stile</p>
-<p class="card-text">Birrificio: @item.Birrificio</p>
-                        <input type="number" min="1" id="quantity-@item.IdProdotto" value="@item.Quantita" />
-                        <button onclick="updateQuantity(@item.IdProdotto)">Aggiorna quantità</button>
-                        <button onclick="removeFromCart(@item.IdProdotto)">Rimuovi</button>
-
-
+                <div class="card me-3 col-9 mb-3">
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="@item.ImgProdotto" class="img-fix card-img-top" alt="...">
+                        </div>
+                        <div class="card-body col-6">
+                            <h5 class="card-title">@item.NomeProdotto</h5>
+                            <p class="card-text">Prezzo: @item.PrezzoProdotto €</p>
+                            <p class="card-text">Totale: @((item.PrezzoProdotto * item.Quantita).ToString("F2")) €</p>
+                            <p class="card-text">Quantità: @item.Quantita</p>
+                            
+                        </div>
+                        <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                            <select id="quantity-@item.IdProdotto" onchange="updateQuantity(@item.IdProdotto)" class=" form-select-beer my-2">
+                                @for (int i = 1; i <= 6; i++)
+                                {
+                                    if (i == item.Quantita)
+                                    {
+                                        <option selected value="@i">@i</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i</option>
+                                    }
+                                }
+                            </select>
+                            <button class="btn btn-danger text-center" onclick="removeFromCart(@item.IdProdotto)">X</button>
+                        </div>
                     </div>
                 </div>
                 total += item.PrezzoProdotto * item.Quantita;
             }
-            <div class="mt-3">
-                <h4>Totale: @total €</h4>
+            <div class="mt-3 col-2">
+                <h4 class="text-center mb-3">Totale: <span class="total-price">@total €</span></h4>
+                <button class="btn btn-success btn-block" onclick="submitOrder()">Ordina</button>
             </div>
         }
         else
         {
             <p>Il carrello è vuoto</p>
         }
-    }
+    </div>
 </div>
+
 
 <script>
     function updateQuantity(idProdotto) {

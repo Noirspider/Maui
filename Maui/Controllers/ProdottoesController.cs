@@ -50,7 +50,7 @@ namespace Maui.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdProdotto,NomeProdotto,ImgProdotto,PrezzoProdotto,QuantitaProdotto,Stile,Descrizione,Volume,Gradazione,Birrificio,Nazione")] Prodotto prodotto)
         {
-            ModelState.Remove("ProdottiAcquistati");
+            ModelState.Remove("ProdottoAcquistato");
             if (ModelState.IsValid)
             {
                 try
@@ -93,7 +93,7 @@ namespace Maui.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdProdotto,NomeProdotto,ImgProdotto,PrezzoProdotto,QuantitaProdotto,Stile,Descrizione,Volume,Gradazione,Birrificio,Nazione")] Prodotto prodotto)
         {
-            ModelState.Remove("ProdottiAcquistati");
+            ModelState.Remove("ProdottoAcquistato");
             if (id != prodotto.IdProdotto)
             {
                 return NotFound();

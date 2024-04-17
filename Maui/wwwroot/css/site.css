@@ -105,15 +105,39 @@ body {
 /* Stile per la card del prodotto */
 /* CSS dedicato per la lista dei prodotti */
 #listaProdotti .card {
-    border: 1px solid #ccc;
+    /*    border: 1px solid #ccc;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: hidden;*/
+margin: 1rem;
+    background: white;
+    border-radius: 10px;
+    transition: border-radius 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+#listaProdotti .shadow {
+    box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1), 0 0 0 2px rgb(190, 190, 190), 0.3em 0.3em 1em rgba(0,0,0,0.3);
+}
+
+#listaProdotti .card:hover {
+    border: 1px solid black;
+    transform: scale(1.05);
+}
+
+
+    #listaProdotti a {
+        text-decoration: none;
+        color: black;
+    }
 
 #listaProdotti .card-img-top {
     width: 100%;
     height: auto;
-    border-bottom: 1px solid #ccc;
+   align-items:center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    padding: 1rem;
+    margin: 0 auto;
 }
 
 #listaProdotti .card-body {
@@ -123,6 +147,7 @@ body {
 #listaProdotti .card-title {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
+font-weight: bold;
 }
 
 #listaProdotti .card-text {
@@ -132,12 +157,61 @@ body {
 #listaProdotti .btn {
     font-size: 0.9rem;
 }
+
 #listaProdotti .img-product {
     width: 200px; /* Imposta la larghezza desiderata */
-    height: 200px; /* Imposta l'altezza desiderata */
+    height: 400px; /* Imposta l'altezza desiderata */
     object-fit: cover; /* Assicura che l'immagine mantenga le proporzioni e riempia l'area specificata */
 }
-#listaProdotti .form-select {
-    width: 100px; /* Imposta la larghezza desiderata */
+
+/*BOTTONI BIRRA*/
+.AddBeerButton {
+    background-color: #47a195;
+    color: floralwhite;
+    border: 2px solid #47a195;
+    border-radius: 12px;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+    .AddBeerButton:hover {
+        background-color: #ffe0b8;
+        color: black;
+        border: 2px solid #ffe0b8;
+    }
+.AddBeerButton:active {
+    background-color: #ff9f1c;
+    color: white;
+    border: 2px solid #ff9f1c;
 }
 
+/*Dropdown birre*/
+.form-select-beer{
+    width: 60px; /* Imposta la larghezza desiderata */
+    height: 40px;
+    border-radius: 12px;
+    margin: 0 10px 0 0;
+}
+
+/*Card Carrello*/
+CartCard {
+    background-color: #ffe0b8;
+    color: black;
+    border-bottom: 2px solid #ffe0b8;
+    border-radius: 12px;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+.CartCard button{
+    background-color: #ffe0b8;
+    color: black;
+    border: 2px solid #ffe0b8;
+    border-radius: 12px;
+    padding: 10px 24px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}

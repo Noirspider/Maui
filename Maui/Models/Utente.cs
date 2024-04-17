@@ -21,6 +21,6 @@ namespace Maui.Models
         public string Email { get; set; }
         public string Telefono { get; set; }
 
-        public virtual ICollection<Ordine> Ordini { get; set; }
+        public virtual ICollection<Ordine> Ordine { get; set; }
     }
 }

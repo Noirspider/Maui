@@ -46,7 +46,7 @@ namespace Maui.Controllers
             DateOnly dateFormatted = new DateOnly(anno, mese, giorno);
 
             var numeroOrdiniEvasi = await _db
-                .Ordini.Where(o =>
+                .Ordine.Where(o =>
                     o.IsEvaso == true && DateOnly.FromDateTime(o.DataOrdine) == dateFormatted
                 )
                 .CountAsync();
@@ -60,7 +60,7 @@ namespace Maui.Controllers
             DateOnly dateFormatted = new DateOnly(anno, mese, giorno);
 
             var listaOrdiniEvasi = await _db
-                .Ordini.Include(o => o.ProdottiAcquistati)
+                .Ordine.Include(o => o.ProdottoAcquistato)
                 .ThenInclude(pa => pa.Prodotto)
                 .Where(o =>
                     o.IsEvaso == true && DateOnly.FromDateTime(o.DataOrdine) == dateFormatted
@@ -70,7 +70,7 @@ namespace Maui.Controllers
             decimal totaleIncasso = 0;
             foreach (var ordine in listaOrdiniEvasi)
             {
-                foreach (var prod in ordine.ProdottiAcquistati)
+                foreach (var prod in ordine.ProdottoAcquistato)
                 {
                     totaleIncasso += prod.Prodotto.PrezzoProdotto;
                 }

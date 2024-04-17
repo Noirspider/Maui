@@ -21,13 +21,13 @@ namespace Maui.Controllers
         // GET: Ordine
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Ordini.Include(o => o.Utente);
+            var applicationDbContext = _context.Ordine.Include(o => o.Utente);
             return View(await applicationDbContext.ToListAsync());
         }
 
         public async Task<IActionResult> ToggleIsEvaso(int id)
         {
-            var ordine = await _context.Ordini.FindAsync(id);
+            var ordine = await _context.Ordine.FindAsync(id);
 
             if (ordine != null)
             {
@@ -47,7 +47,7 @@ namespace Maui.Controllers
             }
 
             var ordine = await _context
-                .Ordini.Include(o => o.Utente)
+                .Ordine.Include(o => o.Utente)
                 .FirstOrDefaultAsync(m => m.IdOrdine == id);
             if (ordine == null)
             {
@@ -73,7 +73,7 @@ namespace Maui.Controllers
         )
         {
             ModelState.Remove("Cliente");
-            ModelState.Remove("ProdottiAcquistati");
+            ModelState.Remove("ProdottoAcquistato");
             if (ModelState.IsValid)
             {
                 _context.Add(ordine);
@@ -97,7 +97,7 @@ namespace Maui.Controllers
                 return NotFound();
             }
 
-            var ordine = await _context.Ordini.FindAsync(id);
+            var ordine = await _context.Ordine.FindAsync(id);
             if (ordine == null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace Maui.Controllers
                 return NotFound();
             }
             ModelState.Remove("Utente");
-            ModelState.Remove("ProdottiAcquistati");
+            ModelState.Remove("ProdottoAcquistato");
 
             if (ModelState.IsValid)
             {
@@ -165,7 +165,7 @@ namespace Maui.Controllers
             }
 
             var ordine = await _context
-                .Ordini.Include(o => o.Utente)
+                .Ordine.Include(o => o.Utente)
                 .FirstOrDefaultAsync(m => m.IdOrdine == id);
             if (ordine == null)
             {
@@ -180,10 +180,10 @@ namespace Maui.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ordine = await _context.Ordini.FindAsync(id);
+            var ordine = await _context.Ordine.FindAsync(id);
             if (ordine != null)
             {
-                _context.Ordini.Remove(ordine);
+                _context.Ordine.Remove(ordine);
             }
 
             await _context.SaveChangesAsync();
@@ -192,7 +192,7 @@ namespace Maui.Controllers
 
         private bool OrdineExists(int id)
         {
-            return _context.Ordini.Any(e => e.IdOrdine == id);
+            return _context.Ordine.Any(e => e.IdOrdine == id);
         }
     }
 }

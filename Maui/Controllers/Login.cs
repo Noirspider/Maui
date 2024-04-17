@@ -33,7 +33,7 @@ namespace Maui.Controllers
         [HttpPost]
         public async Task<IActionResult> Index([Bind("Username,Password")] Utente model)
         {
-            ModelState.Remove("Ordini");
+            ModelState.Remove("Ordine");
             ModelState.Remove("Nome");
             ModelState.Remove("Cognome");
             ModelState.Remove("Email");
@@ -102,7 +102,7 @@ namespace Maui.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignUp([Bind("Username,Password,Nome,Cognome,Email,Telefono")] Utente model)
         {
-            ModelState.Remove("Ordini");
+            ModelState.Remove("Ordine");
             if (!ModelState.IsValid)
             {
                 TempData["error"] = "Errore nei dati inseriti";
