@@ -1,22 +1,71 @@
-﻿
-@model Maui.Models.Prodotto
+﻿@model Maui.Models.Prodotto
 
-<h2>@Model.NomeProdotto</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="ImgDetail" src="@Model.ImgProdotto" alt="@Model.NomeProdotto" />
+        </div>
+        <div class="col-md-8">
+            <div class="product-details">
+                <h2 class="TitleDetail">@Model.NomeProdotto</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="TextDetail">Stile: @Model.Stile</p>
+                        <p class="TextDetail">Volume: @Model.Volume</p>
+                        <p class="TextDetail">Gradazione: @Model.Gradazione</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="TextDetail">Birrificio: @Model.Birrificio</p>
+                        <p class="TextDetail">Nazione: @Model.Nazione</p>
+                    </div>
+                </div>
+                <br />
+                <p class="TextDetail">@Model.Descrizione</p>
 
-<img src="@Model.ImgProdotto" alt="@Model.NomeProdotto" />
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="TextDetail"><b>@Model.PrezzoProdotto €</b></p>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="TextDetail text-danger"><b>@Model.QuantitaProdotto disponibili</b></span>
+                    </div>
+                </div>
 
-<p>@Model.PrezzoProdotto €</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <select id="quantity" class="form-select-beer">
+                            @for (int i = 1; i <= Model.QuantitaProdotto; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-primary" onclick="FetchAddToCartSession('@Model.IdProdotto', $('#quantity').val())">Aggiungi al carrello</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>@Model.Stile</p>
-
-<p>@Model.Birrificio</p>
-
-<p>@Model.Descrizione</p>
-
-<p>@Model.Volume</p>
-
-<p>@Model.Gradazione</p>
-
-<p>@Model.Nazione</p>
-
-<p>@Model.QuantitaProdotto disponibili</p>
+<script>
+    async function FetchAddToCartSession(idProdotto, quantity) {
+        try {
+            const url = `UserOrder/FetchAddToCartSession?id=${idProdotto}&quantity=${quantity}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                location.reload();
+            } else if (response.status == 400) {
+                alert('Non ci sono abbastanza birre in magazzino.');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+</script>

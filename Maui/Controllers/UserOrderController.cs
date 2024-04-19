@@ -18,6 +18,7 @@ namespace Maui.Controllers
             _db = db;
         }
 
+        // Metodo per visualizzare la cronologia degli ordini dell'utente
         public async Task<IActionResult> UserOrderHistory()
         {
             int id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -32,6 +33,7 @@ namespace Maui.Controllers
             return View(ordine);
         }
 
+        // Metodo per visualizzare la pagina principale
         public IActionResult Index()
         {
             var carrello = HttpContext.Session.GetString("Carrello");
@@ -44,6 +46,7 @@ namespace Maui.Controllers
             return View(new List<CartItem>());
         }
 
+        // Metodo per ottenere la lista dei prodotti
         public async Task<IActionResult> FetchListaProdotti()
         {
             var listaProdotti = await _db
@@ -61,6 +64,7 @@ namespace Maui.Controllers
             return Json(listaProdotti);
         }
 
+        // Metodo per aggiungere un prodotto al carrello
         public async Task<IActionResult> FetchAddToCartSession(int id, int quantity)
         {
             var prodotto = await _db
@@ -120,6 +124,7 @@ namespace Maui.Controllers
             return Ok();
         }
 
+        // Metodo per rimuovere un prodotto dal carrello
         public IActionResult FetchRemoveFromCartSession(int id)
         {
             var carrello = HttpContext.Session.GetString("Carrello");
@@ -147,27 +152,23 @@ namespace Maui.Controllers
             return Ok();
         }
 
-        public IActionResult RiepilogoOrdine()
-        {
-            var carrello = HttpContext.Session.GetString("Carrello");
-            if (!string.IsNullOrEmpty(carrello))
-            {
-                var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
-                ViewBag.Carrello = carrelloList;
-                return View();
-            }
-
-            return View("index");
-        }
-
+        // Metodo per creare un nuovo ordine
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RiepilogoOrdine(
-            [Bind("IdUtente,IndirizzoDiConsegna,DataOrdine,Nota")] Ordine ordine
-        )
+           [Bind("IdUtente,IndirizzoDiConsegna,DataOrdine,Nota")] Ordine ordine
+       )
         {
+            // Ottieni l'IdUtente dall'utente attualmente autenticato
+            ordine.IdUtente = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            // Ottieni l'ID dell'utente
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Ottieni il totale dal cookie, vincolato all'ID dell'utente
+            Request.Cookies.TryGetValue("Totale_" + userId, out string totaleString);
+            decimal totale = decimal.Parse(totaleString ?? "0.0");
             ModelState.Remove("Utente");
-            ModelState.Remove("ProdottoAcquistato");
+            ModelState.Remove("ProdottiAcquistati");
 
             if (ModelState.IsValid)
             {
@@ -175,7 +176,7 @@ namespace Maui.Controllers
                 await _db.SaveChangesAsync();
 
                 List<CartItem> carrello = JsonConvert.DeserializeObject<List<CartItem>>(
-                    HttpContext.Session.GetString("Carrello")
+                    HttpContext.Session.GetString("Carrello") ?? "[]"
                 );
                 foreach (var item in carrello)
                 {
@@ -203,6 +204,7 @@ namespace Maui.Controllers
             return View(ordine);
         }
 
+        // Metodo per visualizzare i dettagli di un ordine
         public async Task<IActionResult> DettagliOrdine(int? id)
         {
             if (id == null)
@@ -234,17 +236,38 @@ namespace Maui.Controllers
 
             return View(ordine);
         }
+
+        // Metodo per visualizzare il carrello
         public IActionResult Cart()
         {
             var carrello = HttpContext.Session.GetString("Carrello");
             if (!string.IsNullOrEmpty(carrello))
             {
+                // Deserializza il carrello
                 var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
+                
+                // Calcola il totale del carrello
+                var totale = 0.0m;
+                foreach (var item in carrelloList)
+                {
+                    totale += item.PrezzoProdotto * item.Quantita;
+                }
+
+                // Ottieni l'ID dell'utente
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Imposta un cookie con il totale, vincolato all'ID dell'utente
+                Response.Cookies.Append("Totale_" + userId, totale.ToString());
+
+                // Imposta un cookie con il totale
+                Response.Cookies.Append("Totale", totale.ToString());
                 return View(carrelloList);
             }
 
             return View(new List<CartItem>());
         }
+
+        // Metodo per aggiornare la quantità di un prodotto nel carrello
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int idProdotto, int quantity)
         {
@@ -276,6 +299,8 @@ namespace Maui.Controllers
 
             return Ok();
         }
+
+        // Metodo per rimuovere un prodotto dal carrello
         [HttpPost]
         public IActionResult RemoveFromCart(int idProdotto)
         {
@@ -294,7 +319,8 @@ namespace Maui.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> Checkout()
+        // Metodo per effettuare il checkout
+        public IActionResult Checkout()
         {
             var carrello = HttpContext.Session.GetString("Carrello");
             if (string.IsNullOrEmpty(carrello))
@@ -313,6 +339,8 @@ namespace Maui.Controllers
 
             return View();
         }
+
+        // Metodo per visualizzare i dettagli di un prodotto
         public async Task<IActionResult> Details(int id)
         {
             var prodotto = await _db.Prodotto.FirstOrDefaultAsync(p => p.IdProdotto == id);
@@ -323,7 +351,5 @@ namespace Maui.Controllers
 
             return View(prodotto);
         }
-
-
     }
 }

@@ -1,3 +1,6 @@
+*{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 html {
   font-size: 14px;
 }
@@ -215,3 +218,37 @@ CartCard {
     font-size: 16px;
     font-weight: bold;
 }
+ /*HOME*/
+#BgLogo {
+    background-image: url(/img/sfondo3.jpg);
+    background-size: cover;
+}
+
+
+/*DEtail page*/
+.TitleDetail {
+    color: #47a195;
+    font-size: 24px;
+}
+
+.ImgDetail {
+    width: 100%;
+    height: auto;
+}
+
+.TextDetail {
+    margin-bottom: 10px;
+}
+
+/* Personalizzazione aggiuntiva */
+container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+    .product-details p {
+        margin-bottom: 5px;
+    }

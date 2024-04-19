@@ -42,8 +42,10 @@
                 total += item.PrezzoProdotto * item.Quantita;
             }
             <div class="mt-3 col-2">
-                <h4 class="text-center mb-3">Totale: <span class="total-price">@total €</span></h4>
-                <button class="btn btn-success btn-block" onclick="submitOrder()">Ordina</button>
+                <h4 class="text-center mb-3">Totale: @total €</h4>
+                <form method="post" asp-action="RiepilogoOrdine">
+                    <input type="submit" value="ORDINA" class="btn btn-success" />
+                </form>
             </div>
         }
         else
@@ -55,9 +57,10 @@
 
 
 <script>
+
+
     function updateQuantity(idProdotto) {
         var quantity = $('#quantity-' + idProdotto).val();
-
         $.ajax({
             url: '/UserOrder/UpdateQuantity',
             type: 'POST',
@@ -76,7 +79,6 @@
         });
     }
 
-
     function removeFromCart(idProdotto) {
         $.ajax({
             url: '/UserOrder/RemoveFromCart',
@@ -89,6 +91,5 @@
             }
         });
     }
-
 
 </script>

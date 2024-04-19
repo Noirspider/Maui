@@ -6,43 +6,48 @@
 
 }
 <div class="divform">
-<h4>Ordine</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="RiepilogoOrdine">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="hidden" asp-for="IdUtente" class="form-control" value="@idUtente"></input>
-            </div>
-            <div class="form-group">
-                <label asp-for="IndirizzoDiConsegna" class="control-label"></label>
-                <input asp-for="IndirizzoDiConsegna" class="form-control" />
-                <span asp-validation-for="IndirizzoDiConsegna" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="display:none;">
-                <label asp-for="DataOrdine" class="control-label"></label>
-                <input asp-for="DataOrdine" class="form-control" value="@DateTime.Now" readonly />
-                <span asp-validation-for="DataOrdine" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <input type="hidden" class="form-check-input" asp-for="IsEvaso" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Nota" class="control-label"></label>
-                <input asp-for="Nota" class="form-control" />
-             
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4>Ordine</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="RiepilogoOrdine" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="hidden" asp-for="IdUtente" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="IndirizzoDiConsegna" class="control-label"></label>
+                    <input asp-for="IndirizzoDiConsegna" class="form-control" />
+                    <span asp-validation-for="IndirizzoDiConsegna" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DataOrdine" class="control-label"></label>
+                    <input asp-for="DataOrdine" class="form-control" />
+                    <span asp-validation-for="DataOrdine" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <input type="hidden" class="form-check-input" asp-for="IsEvaso" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Nota" class="control-label"></label>
+                    <input asp-for="Nota" class="form-control" />
+                    <span asp-validation-for="Nota" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="Totale" class="control-label">Totale</label>
+                    <input id="Totale" class="form-control" value="@Context.Request.Cookies["Totale_" + User.FindFirstValue(ClaimTypes.NameIdentifier)]" readonly />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary my-2" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Cart" class="btn btn-danger my-2">Torna al carrello</a>
+    </div>
 
 </div>
 
