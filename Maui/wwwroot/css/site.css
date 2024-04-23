@@ -269,10 +269,17 @@ body {
 /* Stile specifico per le card dei prodotti */
 /* Stile per la card del prodotto */
 /* CSS dedicato per la lista dei prodotti */
+#listaProdotti {
+
+    justify-content: space-evenly;
+
+  
+}
 #listaProdotti .card {
     /*    border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;*/
+    
 margin: 1rem;
     background: white;
     border-radius: 10px;
@@ -414,3 +421,52 @@ container {
     .product-details p {
         margin-bottom: 5px;
     }
+
+
+
+
+    /*RIEPILOGO ORDINI*/
+/* Stile per il contenitore principale degli ordini */
+.order-history {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Spazio tra le card degli ordini */
+}
+
+/* Stile per la singola card di riepilogo dell'ordine */
+.order-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Stile per le informazioni dell'ordine */
+.order-details {
+    margin-bottom: 10px;
+}
+
+/* Stile per l'ID dell'ordine */
+.order-id {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* Stile per le informazioni aggiuntive dell'ordine */
+.order-info {
+    color: #666;
+}
+
+/* Stile per la lista dei prodotti acquistati */
+.ordered-products ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Stile per ogni singolo prodotto nell'elenco */
+.ordered-products li {
+    margin-bottom: 5px;
+}

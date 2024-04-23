@@ -1,5 +1,6 @@
 ﻿using Maui.Class;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Maui.Models
 {
@@ -22,5 +23,7 @@ namespace Maui.Models
         public string Telefono { get; set; }
 
         public virtual ICollection<Ordine> Ordine { get; set; }
+        //[NotMapped]
+        //public virtual ICollection<Pagamento> Pagamento { get; set; }
     }
 }

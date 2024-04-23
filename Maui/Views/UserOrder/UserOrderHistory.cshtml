@@ -4,60 +4,38 @@
     ViewData["Title"] = "Cronologia Ordini";
 }
 
-<div class="divform">
+<div class="order-history">
+    <h4>Cronologia Ordini</h4>
 
-<h4>
-  Cronologia Ordini
-</h4>
-
-@if (Model.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.IndirizzoDiConsegna)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataOrdine)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsEvaso)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nota)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PrezzoTotale)
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IndirizzoDiConsegna)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DataOrdine)
-                    </td>
-                    <td>
-                        @(item.IsEvaso ? "Evaso" : "Non Ancora Evaso")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nota)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PrezzoTotale) €
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>Nessun ordine da mostrare.</p>
-}
+    @if (Model.Any())
+    {
+        @foreach (var ordine in Model)
+        {
+            <div class="order-card row">
+                <div class="order-details col-6">
+                    <h5 class="order-id">Ordine ID: @ordine.IdOrdine</h5>
+                    <p class="order-info">
+                        <span class="info-label"><b>Indirizzo di consegna:</b></span> @ordine.IndirizzoDiConsegna <br />
+                        <span class="info-label"><b>Data ordine:</b></span> @ordine.DataOrdine <br />
+                        <span class="info-label"><b>Stato:</b></span> @(ordine.IsEvaso ? "Evaso" : "Non Ancora Evaso") <br />
+                        <span class="info-label"><b>Nota:</b></span> @ordine.Nota <br />
+                        <span class="info-label"><b>Prezzo totale:</b></span> @ordine.PrezzoTotale € <br />
+                    </p>
+                </div>
+                <div class="ordered-products col-6">
+                    <h5>Prodotti acquistati:</h5>
+                    <ul>
+                        @foreach (var prodotto in ordine.ProdottoAcquistato)
+                        {
+                            <li><b>@prodotto.Prodotto.NomeProdotto</b> - Qta: @prodotto.Quantita</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>Nessun ordine da mostrare.</p>
+    }
 </div>

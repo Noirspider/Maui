@@ -171,7 +171,7 @@ namespace Maui.Controllers
 
             // Imposta il totale dell'ordine
             // Imposta il totale dell'ordine
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)         // verifica ex composizione
             {
                 // Crea un nuovo ordine
                 _db.Ordine.Add(ordine);
@@ -204,7 +204,7 @@ namespace Maui.Controllers
                     HttpContext.Session.Remove("Carrello");
                     // Rimuovi il cookie con il totale
                   // return RedirectToAction("DettagliOrdine", "UserOrder", new { id = ordine.IdOrdine });
-                return RedirectToAction("OrdineCompletato");
+                    return RedirectToAction("OrdineCompletato", "UserOrder");
                 }
                 else
                 {
@@ -218,8 +218,13 @@ namespace Maui.Controllers
 
 
 
+        /// //////////////////////////////////////////////
 
-
+        public IActionResult OrdineCompletato()
+        {
+            // Restituisce la vista OrdineCompletato
+            return View();
+        }
 
 
 
@@ -234,7 +239,7 @@ namespace Maui.Controllers
 
 
         // Metodo per visualizzare i dettagli di un ordine
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> DettagliOrdine(int? id)
         {
             if (id == null)
@@ -284,60 +289,35 @@ namespace Maui.Controllers
 
         /////////////////////////////////////////////////////////////////
 
-        // Metodo per visualizzare i dettagli di un ordine
-
-
-
-
-        ///        /// ////////////////////
-
-
-
-
-        // Metodo per visualizzare la cronologia degli ordini dell'utente
         [HttpGet]
         public async Task<IActionResult> UserOrderHistory()
         {
             try
             {
-                if (User.Identity.IsAuthenticated)
-                {
-                    if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int id))
+                var id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                
+                    var utente = await _db.Utente.FindAsync(id);
+                    if (utente == null)
                     {
-                        var utente = await _db.Utente.FindAsync(id);
-                        if (utente == null)
-                        {
-                            Console.WriteLine("L'utente non esiste nel database.");
-                            return View("Error");
-                        }
-
-                        var ordini = await _db.Ordine.Where(o => o.IdUtente == id).ToListAsync();
-                        if (ordini == null)
-                        {
-                            Console.WriteLine("Non ci sono ordini per questo utente.");
-                            return View("Error");
-                        }
-
-                        var ordiniConDettagli = await _db.Ordine
-                            .Include(o => o.Utente)
-                            .Include(o => o.ProdottoAcquistato)
-                            .ThenInclude(p => p.Prodotto)
-                            .Where(o => o.IdUtente == id)
-                            .ToListAsync();
-
-                        return View(ordiniConDettagli);
-                    }
-                    else
-                    {
-                        Console.WriteLine("User ID is not a valid integer.");
+                        Console.WriteLine("L'utente non esiste nel database.");
                         return View("Error");
                     }
-                }
-                else
-                {
-                    Console.WriteLine("User is not authenticated.");
-                    return View("Error");
-                }
+
+                    var ordini = await _db.Utente.Include(i=>i.Ordine).Where(o => o.IdUtente == id).ToListAsync();
+                    if (ordini == null)
+                    {
+                        Console.WriteLine("Non ci sono ordini per questo utente.");
+                        return View("Error");
+                    }
+
+                    var ordiniConDettagli = await _db.Ordine
+                        .Include(o => o.Utente)
+                        .Include(o => o.ProdottoAcquistato)
+                        .ThenInclude(p => p.Prodotto)
+                        .Where(o => o.IdUtente == id)
+                        .ToListAsync();
+
+                    return View(ordiniConDettagli);
             }
             catch (Exception ex)
             {
@@ -345,7 +325,6 @@ namespace Maui.Controllers
                 return View("Error");
             }
         }
-
 
 
 

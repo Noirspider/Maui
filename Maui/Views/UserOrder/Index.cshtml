@@ -42,11 +42,6 @@
             }
         }
 
-        // async function updateCartItemCount() {
-        //     const response = await fetch('/Home/GetCartItemsCount');
-        //     const count = await response.json();
-        //     $('.badge').text(count);
-
         $(document).ready(function () {
             async function FetchListaProdotti() {
                 const response = await fetch('UserOrder/FetchListaProdotti');
@@ -56,7 +51,7 @@
                 $('#listaProdotti').empty(); // Clear the existing content
 
                 data.forEach(product => {
-                    const card = $('<div>').addClass('col-md-4 my-3 d-flex justify-content-between card shadow ');
+                    const card = $('<div>').addClass('col-md-3 d-flex justify-content-between card shadow ');
 
                     const link = $('<a>').attr('href', 'UserOrder/Details/' + product.idProdotto);
                     const img = $('<img>').attr('src', product.imgProdotto).addClass('img-fix card-img-top img-product').attr('alt', '...');
