@@ -26,6 +26,7 @@ namespace Maui.Models
         [NotMapped]
         public decimal PrezzoTotale
         {
+
             get
             {
                 if (ProdottoAcquistato == null)

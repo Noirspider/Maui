@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "RiepilogoOrdine";
     int idUtente = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
 }
 <div class="divform">
     <h4>Ordine</h4>
@@ -15,6 +14,7 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <input type="hidden" asp-for="IdUtente" class="form-control" />
+                    <span asp-validation-for="IdUtente" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="IndirizzoDiConsegna" class="control-label"></label>
@@ -23,11 +23,12 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="DataOrdine" class="control-label"></label>
-                    <input asp-for="DataOrdine" class="form-control" />
+                    <input asp-for="DataOrdine" class="form-control" type="datetime" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")" />
                     <span asp-validation-for="DataOrdine" class="text-danger"></span>
                 </div>
                 <div class="form-group form-check">
-                    <input type="hidden" class="form-check-input" asp-for="IsEvaso" />
+                    <input type="hidden" class="form-check-input" asp-for="IsEvaso" value="False" />
+                    <span asp-validation-for="IsEvaso" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="Nota" class="control-label"></label>
@@ -37,10 +38,51 @@
                 <div class="form-group">
                     <label for="Totale" class="control-label">Totale</label>
                     <input id="Totale" class="form-control" value="@Context.Request.Cookies["Totale_" + User.FindFirstValue(ClaimTypes.NameIdentifier)]" readonly />
+                    <span asp-validation-for="PrezzoTotale" class="text-danger"></span>
                 </div>
+                <!------------------------------------------------->
+                <!------------------------------------------------->
+                <!------------------------------------------------->
+                <!---->
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary my-2" />
+                    <label for="paymentMethod" class="control-label">Modalità di Pagamento</label>
+                    <select id="paymentMethod" class="form-control">
+                        <option value="Carta di credito">Carta di credito</option>
+                        <option value="Contrassegno">Contrassegno</option>
+                    </select>
                 </div>
+
+                <div class="form-group creditCardField">
+                    <label for="NumeroCarta" class="control-label">Numero Carta</label>
+                    <input id="NumeroCarta" class="form-control" />
+                </div>
+
+                <div class="form-group creditCardField">
+                    <label for="ScadenzaCarta" class="control-label">Scadenza Carta</label>
+                    <input id="ScadenzaCarta" class="form-control" />
+                </div>
+
+                <div class="form-group creditCardField">
+                    <label for="CVV" class="control-label">CVV</label>
+                    <input id="CVV" class="form-control" />
+                </div>
+                <!------------------------------------------------->
+                <!------------------------------------------------->
+                <!------------------------------------------------->
+                <div class="form-group">
+                    <input type="submit" value="Completa Ordine" class="btn btn-primary my-2" />
+                </div>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
             </form>
         </div>
     </div>
@@ -56,3 +98,20 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#paymentMethod').change(function () {
+            if ($(this).val() === 'Carta di credito') {
+                $('.creditCardField').show();
+            } else {
+                $('.creditCardField').hide();
+            }
+        }).change();  // Trigger the change event to set the initial state
+    });
+</script>

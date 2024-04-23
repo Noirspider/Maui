@@ -103,6 +103,168 @@ body {
         color: #007bff;
     }
 
+.input-wrapper input {
+    background-color: #eee;
+    border: none;
+    padding: 1rem;
+    font-size: 1rem;
+    width: 20em;
+    border-radius: 1rem;
+    color: lightcoral;
+    box-shadow: 0 0.4rem #dfd9d9;
+    cursor: pointer;
+}
+
+    .input-wrapper input:focus {
+        outline-color: lightcoral;
+    }
+
+.btnLogin {
+    text-align: center;
+    --width: 120px;
+    --timing: 2s;
+    border: 0;
+    width: var(--width);
+    padding-block: 1em;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1em;
+    background: rgb(64, 192, 87);
+    transition: all 0.2s;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+    .btnLogin:hover {
+        background-image: linear-gradient( to right, rgb(250, 82, 82), rgb(250, 82, 82) 16.65%, rgb(190, 75, 219) 16.65%, rgb(190, 75, 219) 33.3%, rgb(76, 110, 245) 33.3%, rgb(76, 110, 245) 49.95%, rgb(64, 192, 87) 49.95%, rgb(64, 192, 87) 66.6%, rgb(250, 176, 5) 66.6%, rgb(250, 176, 5) 83.25%, rgb(253, 126, 20) 83.25%, rgb(253, 126, 20) 100%, rgb(250, 82, 82) 100% );
+        animation: var(--timing) linear dance6123 infinite;
+        transform: scale(1.05) translateY(-1px);
+    }
+
+@keyframes dance6123 {
+    to {
+        background-position: var(--width);
+    }
+}
+
+
+/*----------------------------------------------*/
+
+.custom-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 0.4em;
+    background-color: #171717;
+    border-radius: 25px;
+    transition: .4s ease-in-out;
+}
+
+    .custom-form:hover {
+        transform: scale(1.05);
+        border: 1px solid black;
+    }
+
+#custom-heading {
+    text-align: center;
+    margin: 2em;
+    color: rgb(255, 255, 255);
+    font-size: 1.2em;
+}
+
+.custom-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    border-radius: 25px;
+    padding: 0.6em;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #171717;
+
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+
+.custom-input-icon {
+    height: 1.3em;
+    width: 1.3em;
+    fill: white;
+}
+
+.custom-input-field {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #d3d3d3;
+}
+
+.custom-form .custom-btn {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 2.5em;
+}
+
+.custom-button1 {
+    text-align: center;
+    padding: 0.5em;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+    border-radius: 5px;
+    margin-right: 0.5em;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+
+    .custom-button1:hover {
+        background-color: black;
+        color: white;
+    }
+
+.custom-button2 {
+    padding: 0.5em;
+    padding-left: 2.3em;
+    padding-right: 2.3em;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+
+    .custom-button2:hover {
+        background-color: #ffe0b8;
+        color: black;
+    }
+
+.custom-button3 {
+    margin-bottom: 3em;
+    padding: 0.5em;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+
+    .custom-button3:hover {
+        background-color: red;
+        color: white;
+    }
+
+
+/*------------------------------------------------*/
+
     /*prodotti */
 /* Stile specifico per le card dei prodotti */
 /* Stile per la card del prodotto */

@@ -42,6 +42,11 @@
             }
         }
 
+        // async function updateCartItemCount() {
+        //     const response = await fetch('/Home/GetCartItemsCount');
+        //     const count = await response.json();
+        //     $('.badge').text(count);
+
         $(document).ready(function () {
             async function FetchListaProdotti() {
                 const response = await fetch('UserOrder/FetchListaProdotti');

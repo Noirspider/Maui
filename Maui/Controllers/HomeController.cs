@@ -4,6 +4,7 @@ using Maui.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Maui.Controllers
@@ -89,5 +90,15 @@ namespace Maui.Controllers
                 }
             );
         }
+
+        // Viewbag.cartItems.count 
+        public IActionResult GetCartItemsCount()
+        {
+            var cart = HttpContext.Session.GetString("Carrello");
+            var cartList = string.IsNullOrEmpty(cart) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cart) ?? new List<CartItem>();
+            var count = cartList.Sum(item => item.Quantita);
+            return Json(count);
+        }
+
     }
 }

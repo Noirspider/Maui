@@ -3,54 +3,100 @@ using Maui.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
 using System.Security.Claims;
 
+
+
+
 namespace Maui.Controllers
 {
+    // Definizione della classe UserOrderController
     [Authorize]
+    // Definizione della classe UserOrderController
     public class UserOrderController : Controller
-    {
+    {// Dichiarazione del database
         private readonly ApplicationDbContext _db;
-
+        // Costruttore
         public UserOrderController(ApplicationDbContext db)
         {
+            // Inizializza il database
             _db = db;
         }
 
-        // Metodo per visualizzare la cronologia degli ordini dell'utente
-        public async Task<IActionResult> UserOrderHistory()
+
+
+
+
+
+
+
+        /////////////////////////////////////////////////////////////////
+
+// Metodo per visualizzare i dettagli di un ordine
+        public async Task<IActionResult> Details(int? id)
         {
-            int id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            var ordine = await _db
-                .Ordine.Include(o => o.Utente)
-                .Include(o => o.ProdottoAcquistato)
-                .ThenInclude(p => p.Prodotto)
-                .Where(o => o.IdUtente == id)
-                .ToListAsync();
-
-            return View(ordine);
+            // Se l'ID è nullo, restituisci un errore
+            if (id == null)
+            {
+                return NotFound();
+            }
+            // Ottieni l'ordine dal database
+            var product = await _db.Prodotto
+                .FirstOrDefaultAsync(m => m.IdProdotto == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            // Restituisci la vista con il prodotto
+            return View(product);
         }
+
+
+
+
+        /// ////////////////////////////
 
         // Metodo per visualizzare la pagina principale
         public IActionResult Index()
         {
+            // Ottieni il carrello dalla sessione
             var carrello = HttpContext.Session.GetString("Carrello");
+            // Se il carrello non è vuoto
             if (!string.IsNullOrEmpty(carrello))
             {
+                // Deserializza il carrello
                 var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
+                // Calcola il totale del carrello
                 return View(carrelloList);
             }
-
+            // Se il carrello è vuoto, restituisci una lista vuota
             return View(new List<CartItem>());
         }
+
+
+
+
+
+
+        /////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
 
         // Metodo per ottenere la lista dei prodotti
         public async Task<IActionResult> FetchListaProdotti()
         {
+            // Ottieni la lista dei prodotti dal database
             var listaProdotti = await _db
+                // Seleziona la tabella dei prodotti
                 .Prodotto
+                // Seleziona i campi necessari
                 .Select(p => new
                 {
                     p.IdProdotto,
@@ -60,164 +106,150 @@ namespace Maui.Controllers
                     p.Stile,
                     p.Birrificio
                 })
+                // Ottieni la lista dei prodotti dal database
                 .ToListAsync();
             return Json(listaProdotti);
         }
 
-        // Metodo per aggiungere un prodotto al carrello
-        public async Task<IActionResult> FetchAddToCartSession(int id, int quantity)
-        {
-            var prodotto = await _db
-                .Prodotto
-                .Select(p => new
-                {
-                    p.IdProdotto,
-                    p.ImgProdotto,
-                    p.NomeProdotto,
-                    PrezzoProdotto = (decimal)p.PrezzoProdotto,
-                    p.Stile,
-                    p.Birrificio,
-                    p.QuantitaProdotto
-                })
-                .FirstOrDefaultAsync(p => p.IdProdotto == id);
 
-            if (prodotto == null)
-            {
-                return NotFound();
-            }
 
-            var carrello = HttpContext.Session.GetString("Carrello");
-            var carrelloList = string.IsNullOrEmpty(carrello) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(carrello) ?? new List<CartItem>();
-            var existingItem = carrelloList.FirstOrDefault(i => i.IdProdotto == id);
-            if (existingItem != null)
-            {
-                if (existingItem.Quantita + quantity > prodotto.QuantitaProdotto)
-                {
-                    return BadRequest("Non ci sono abbastanza birre in magazzino.");
-                }
-                existingItem.Quantita += quantity;
-            }
-            else
-            {
-                if (prodotto.QuantitaProdotto < 1)
-                {
-                    return BadRequest("Non ci sono abbastanza birre in magazzino.");
-                }
-                CartItem cartItem = new CartItem
-                {
-                    IdProdotto = prodotto.IdProdotto,
-                    ImgProdotto = prodotto.ImgProdotto,
-                    NomeProdotto = prodotto.NomeProdotto,
-                    PrezzoProdotto = prodotto.PrezzoProdotto,
-                    QuantitaProdotto = prodotto.QuantitaProdotto,
-                    Quantita = quantity
-                };
 
-                carrelloList.Add(cartItem);
+        /////////////////////////////////////////////////////////////////
 
-            }
-            string jsonCart = JsonConvert.SerializeObject(carrelloList);
-            HttpContext.Session.SetString("Carrello", jsonCart);
 
-            System.Diagnostics.Debug.WriteLine(HttpContext.Session.GetString("Carrello"));
 
-            return Ok();
-        }
 
-        // Metodo per rimuovere un prodotto dal carrello
-        public IActionResult FetchRemoveFromCartSession(int id)
-        {
-            var carrello = HttpContext.Session.GetString("Carrello");
-            if (string.IsNullOrEmpty(carrello))
-            {
-                return NotFound();
-            }
 
-            var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
-            var existingItem = carrelloList.FirstOrDefault(i => i.IdProdotto == id);
-            if (existingItem != null)
-            {
-                if (existingItem.Quantita > 1)
-                {
-                    existingItem.Quantita--;
-                }
-                else
-                {
-                    carrelloList.Remove(existingItem);
-                }
-            }
-            string jsonCart = JsonConvert.SerializeObject(carrelloList);
-            HttpContext.Session.SetString("Carrello", jsonCart);
 
-            return Ok();
-        }
+       
+
+
+
+
+
+        /////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 
         // Metodo per creare un nuovo ordine
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RiepilogoOrdine(
-           [Bind("IdUtente,IndirizzoDiConsegna,DataOrdine,Nota")] Ordine ordine
-       )
+      [Bind("IdUtente,IndirizzoDiConsegna,DataOrdine")] Ordine ordine
+  )
         {
             // Ottieni l'IdUtente dall'utente attualmente autenticato
             ordine.IdUtente = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
             // Ottieni l'ID dell'utente
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+      
 
             // Ottieni il totale dal cookie, vincolato all'ID dell'utente
             Request.Cookies.TryGetValue("Totale_" + userId, out string totaleString);
             decimal totale = decimal.Parse(totaleString ?? "0.0");
-            ModelState.Remove("Utente");
-            ModelState.Remove("ProdottiAcquistati");
 
+            ModelState.Remove("Utente");
+            ModelState.Remove("Nota");
+            ModelState.Remove("ProdottoAcquistato");
+
+            // Se il modello non è valido, restituisci un errore
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    System.Diagnostics.Debug.WriteLine(error.ErrorMessage);
+                }
+            }
+
+            // Imposta il totale dell'ordine
+            // Imposta il totale dell'ordine
             if (ModelState.IsValid)
             {
+                // Crea un nuovo ordine
                 _db.Ordine.Add(ordine);
                 await _db.SaveChangesAsync();
 
+                // Deserializza il carrello
                 List<CartItem> carrello = JsonConvert.DeserializeObject<List<CartItem>>(
                     HttpContext.Session.GetString("Carrello") ?? "[]"
                 );
-                foreach (var item in carrello)
+
+                // Se il carrello non è vuoto
+                if (carrello.Count > 0)
                 {
-                    ProdottoAcquistato prodottoAcquistato = new ProdottoAcquistato
+                    // Per ogni prodotto nel carrello
+                    foreach (var item in carrello)
                     {
-                        IdOrdine = ordine.IdOrdine,
-                        IdProdotto = item.IdProdotto,
-                        Quantita = item.Quantita,
-                    };
-                    _db.ProdottoAcquistato.Add(prodottoAcquistato);
+                        // Ottieni il prodotto dal database
+                        ProdottoAcquistato prodottoAcquistato = new ProdottoAcquistato
+                        {
+                            IdOrdine = ordine.IdOrdine,
+                            IdProdotto = item.IdProdotto,
+                            Quantita = item.Quantita,
+                        };
+                        _db.ProdottoAcquistato.Add(prodottoAcquistato);
+                    }
+                    // Aggiorna il totale dell'ordine
+                    TempData["Success"] = "Ordine creato con successo";
+                    await _db.SaveChangesAsync();
+                    // Rimuovi il carrello dalla sessione
+                    HttpContext.Session.Remove("Carrello");
+                    // Rimuovi il cookie con il totale
+                  // return RedirectToAction("DettagliOrdine", "UserOrder", new { id = ordine.IdOrdine });
+                return RedirectToAction("OrdineCompletato");
                 }
-
-                TempData["Success"] = "Ordine creato con successo";
-                await _db.SaveChangesAsync();
-
-                HttpContext.Session.Remove("Carrello");
-
-                return RedirectToAction(
-                    "DettagliOrdine",
-                    "UserOrder",
-                    new { id = ordine.IdOrdine }
-                );
+                else
+                {
+                    // Gestisci il caso in cui il carrello è vuoto
+                    TempData["Error"] = "Il carrello è vuoto";
+                }
             }
-            TempData["Error"] = "Errore durante la creazione dell'ordine";
             return View(ordine);
         }
 
+
+
+
+
+
+
+
+
+
+
+        /////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
         // Metodo per visualizzare i dettagli di un ordine
+        [HttpPost]
         public async Task<IActionResult> DettagliOrdine(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var ordine = await _db
+            // Ottieni l'ordine dal database
+            var ordine = await _db                           // qui c'è l'errore 
+               // Seleziona la tabella degli ordini
                 .Ordine.Include(o => o.Utente)
+                // Seleziona i campi necessari
                 .Include(o => o.ProdottoAcquistato)
                 .ThenInclude(p => p.Prodotto)
                 .FirstOrDefaultAsync(m => m.IdOrdine == id);
-
+            // Se l'ordine non esiste restituisci un errore
             if (ordine == null)
             {
                 return NotFound();
@@ -227,17 +259,104 @@ namespace Maui.Controllers
 
             foreach (var prodotto in ordine.ProdottoAcquistato)
             {
-                totale += prodotto.Prodotto.PrezzoProdotto * prodotto.Quantita;
+                if (prodotto.Prodotto != null && prodotto.Prodotto.PrezzoProdotto != null)
+                {
+                    totale += prodotto.Prodotto.PrezzoProdotto * prodotto.Quantita;
+                }
             }
-
+            // Aggiorna il totale dell'ordine
             ordine.PrezzoTotale = totale;
-
-            await _db.SaveChangesAsync();
-
+            // Salva le modifiche al database
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {   
+                Console.WriteLine(ex.Message);
+            }
+                
+                // Restituisci la vista con l'ordine
             return View(ordine);
         }
 
+
+
+        /////////////////////////////////////////////////////////////////
+
+        // Metodo per visualizzare i dettagli di un ordine
+
+
+
+
+        ///        /// ////////////////////
+
+
+
+
+        // Metodo per visualizzare la cronologia degli ordini dell'utente
+        [HttpGet]
+        public async Task<IActionResult> UserOrderHistory()
+        {
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int id))
+                    {
+                        var utente = await _db.Utente.FindAsync(id);
+                        if (utente == null)
+                        {
+                            Console.WriteLine("L'utente non esiste nel database.");
+                            return View("Error");
+                        }
+
+                        var ordini = await _db.Ordine.Where(o => o.IdUtente == id).ToListAsync();
+                        if (ordini == null)
+                        {
+                            Console.WriteLine("Non ci sono ordini per questo utente.");
+                            return View("Error");
+                        }
+
+                        var ordiniConDettagli = await _db.Ordine
+                            .Include(o => o.Utente)
+                            .Include(o => o.ProdottoAcquistato)
+                            .ThenInclude(p => p.Prodotto)
+                            .Where(o => o.IdUtente == id)
+                            .ToListAsync();
+
+                        return View(ordiniConDettagli);
+                    }
+                    else
+                    {
+                        Console.WriteLine("User ID is not a valid integer.");
+                        return View("Error");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("User is not authenticated.");
+                    return View("Error");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Ultimo errore:" + ex.Message);
+                return View("Error");
+            }
+        }
+
+
+
+
+
+
+        //CARRELLO 
+
+
+
         // Metodo per visualizzare il carrello
+
         public IActionResult Cart()
         {
             var carrello = HttpContext.Session.GetString("Carrello");
@@ -245,9 +364,10 @@ namespace Maui.Controllers
             {
                 // Deserializza il carrello
                 var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
-                
+
                 // Calcola il totale del carrello
                 var totale = 0.0m;
+                // Per ogni prodotto nel carrello
                 foreach (var item in carrelloList)
                 {
                     totale += item.PrezzoProdotto * item.Quantita;
@@ -267,89 +387,198 @@ namespace Maui.Controllers
             return View(new List<CartItem>());
         }
 
+
+
+
+
+
+
+
+
+
+
         // Metodo per aggiornare la quantità di un prodotto nel carrello
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int idProdotto, int quantity)
         {
+            // Ottieni il prodotto dal database
             var prodotto = await _db
                 .Prodotto
                 .FirstOrDefaultAsync(p => p.IdProdotto == idProdotto);
-
+            // Se il prodotto non esiste, restituisci un errore
             if (prodotto == null)
             {
                 return NotFound();
             }
-
+            // Se la quantità richiesta è maggiore della quantità disponibile
             if (quantity > prodotto.QuantitaProdotto)
             {
                 return BadRequest("Non ci sono abbastanza birre in magazzino.");
             }
-
+            // Ottieni il carrello dalla sessione
             var carrello = HttpContext.Session.GetString("Carrello");
+            // Se il carrello è vuoto, restituisci un errore
             if (!string.IsNullOrEmpty(carrello))
             {
+                //  Deserializza il carrello
                 var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
+                // Ottieni il prodotto dal carrello
                 var item = carrelloList.FirstOrDefault(i => i.IdProdotto == idProdotto);
+                // Se il prodotto è nel carrello
                 if (item != null)
                 {
+                    // Aggiorna la quantità del prodotto
                     item.Quantita = quantity;
+                    // Serializza il carrello
                     HttpContext.Session.SetString("Carrello", JsonConvert.SerializeObject(carrelloList));
                 }
             }
+            // Restituisci un messaggio di successo
+            return Ok();
+        }
+
+
+
+        // Metodo per aggiungere un prodotto al carrello
+        public async Task<IActionResult> FetchAddToCartSession(int id, int quantity)
+        {
+            // Ottieni il prodotto dal database
+            var prodotto = await _db
+                // Seleziona la tabella dei prodotti
+                .Prodotto
+                // Seleziona i campi necessari
+                .Select(p => new
+                {
+                    p.IdProdotto,
+                    p.ImgProdotto,
+                    p.NomeProdotto,
+                    PrezzoProdotto = (decimal)p.PrezzoProdotto,
+                    p.Stile,
+                    p.Birrificio,
+                    p.QuantitaProdotto
+                })
+                // Ottieni il prodotto dal database
+                .FirstOrDefaultAsync(p => p.IdProdotto == id);
+            // Se il prodotto non esiste, restituisci un errore
+            if (prodotto == null)
+            {
+                // Se il prodotto non esiste, restituisci un errore
+                return NotFound();
+            }
+            // Ottieni il carrello dalla sessione
+            var carrello = HttpContext.Session.GetString("Carrello");
+            // Deserializza il carrello
+            var carrelloList = string.IsNullOrEmpty(carrello) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(carrello) ?? new List<CartItem>();
+            // Ottieni il prodotto dal carrello
+            var existingItem = carrelloList.FirstOrDefault(i => i.IdProdotto == id);
+            // Se il prodotto è già nel carrello
+            if (existingItem != null)
+            {
+                // Se la quantità richiesta è maggiore della quantità disponibile
+                if (existingItem.Quantita + quantity > prodotto.QuantitaProdotto)
+                {
+                    return BadRequest("Non ci sono abbastanza birre in magazzino.");
+                }
+                existingItem.Quantita += quantity;
+            }
+            else
+            {
+                // Se la quantità richiesta è maggiore della quantità disponibile
+                if (prodotto.QuantitaProdotto < 1)
+                {
+                    return BadRequest("Non ci sono abbastanza birre in magazzino.");
+                }
+                // Aggiungi il prodotto al carrello
+                CartItem cartItem = new CartItem
+                {
+                    IdProdotto = prodotto.IdProdotto,
+                    ImgProdotto = prodotto.ImgProdotto,
+                    NomeProdotto = prodotto.NomeProdotto,
+                    PrezzoProdotto = prodotto.PrezzoProdotto,
+                    QuantitaProdotto = prodotto.QuantitaProdotto,
+                    Quantita = quantity
+                };
+
+                carrelloList.Add(cartItem);
+
+            }
+            // Serializza il carrello
+            string jsonCart = JsonConvert.SerializeObject(carrelloList);
+            HttpContext.Session.SetString("Carrello", jsonCart);
+
+            System.Diagnostics.Debug.WriteLine(HttpContext.Session.GetString("Carrello"));
+            // Restituisci un messaggio di successo
+            return Ok();
+        }
+
+
+
+
+
+
+
+        // Metodo per rimuovere un prodotto dal carrello
+        public IActionResult FetchRemoveFromCartSession(int id)
+        {
+            // Ottieni il carrello dalla sessione
+            var carrello = HttpContext.Session.GetString("Carrello");
+            // Se il carrello è vuoto, restituisci un errore
+            if (string.IsNullOrEmpty(carrello))
+            {
+                return NotFound();
+            }
+            // Deserializza il carrello
+            var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
+            var existingItem = carrelloList.FirstOrDefault(i => i.IdProdotto == id);
+            if (existingItem != null)
+            {
+                // Se la quantità è maggiore di 1, decrementa la quantità
+                if (existingItem.Quantita > 1)
+                {
+                    existingItem.Quantita--;
+                }
+                else
+                {
+                    carrelloList.Remove(existingItem);
+                }
+            }
+            // Serializza il carrello
+            string jsonCart = JsonConvert.SerializeObject(carrelloList);
+            HttpContext.Session.SetString("Carrello", jsonCart);
 
             return Ok();
         }
+
+
+
+
+
+
 
         // Metodo per rimuovere un prodotto dal carrello
         [HttpPost]
         public IActionResult RemoveFromCart(int idProdotto)
         {
+            // Ottieni il carrello dalla sessione
             var carrello = HttpContext.Session.GetString("Carrello");
+            // Se il carrello è vuoto, restituisci un errore
             if (!string.IsNullOrEmpty(carrello))
             {
+                // Deserializza il carrello
                 var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
+                // Ottieni il prodotto dal carrello
                 var item = carrelloList.FirstOrDefault(i => i.IdProdotto == idProdotto);
+                // Se il prodotto è nel carrello
                 if (item != null)
                 {
+                    // Rimuovi il prodotto dal carrello
                     carrelloList.Remove(item);
+                    // Serializza il carrello
                     HttpContext.Session.SetString("Carrello", JsonConvert.SerializeObject(carrelloList));
                 }
             }
 
             return Ok();
-        }
-
-        // Metodo per effettuare il checkout
-        public IActionResult Checkout()
-        {
-            var carrello = HttpContext.Session.GetString("Carrello");
-            if (string.IsNullOrEmpty(carrello))
-            {
-                return RedirectToAction("Index");
-            }
-
-            var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
-            var totale = 0.0m;
-            foreach (var item in carrelloList)
-            {
-                totale += item.PrezzoProdotto * item.Quantita;
-            }
-
-            ViewBag.Totale = totale;
-
-            return View();
-        }
-
-        // Metodo per visualizzare i dettagli di un prodotto
-        public async Task<IActionResult> Details(int id)
-        {
-            var prodotto = await _db.Prodotto.FirstOrDefaultAsync(p => p.IdProdotto == id);
-            if (prodotto == null)
-            {
-                return NotFound();
-            }
-
-            return View(prodotto);
         }
     }
 }
