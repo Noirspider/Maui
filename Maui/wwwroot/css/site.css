@@ -1,3 +1,14 @@
+
+/*
+    COLORI:
+#47a195 - Verde acqua
+#ffe0b8 - SABBIA
+    #988062 - Marrone
+*/
+
+
+
+
 *{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
@@ -74,9 +85,8 @@ body {
     max-width: 400px;
     margin: auto;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
+
+   
 }
 
     .login-form h4 {
@@ -119,6 +129,9 @@ body {
         outline-color: lightcoral;
     }
 
+
+
+/*----------------------------------------------*/
 .btnLogin {
     text-align: center;
     --width: 120px;
@@ -148,7 +161,6 @@ body {
 }
 
 
-/*----------------------------------------------*/
 
 .custom-form {
     display: flex;
@@ -157,20 +169,24 @@ body {
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 0.4em;
-    background-color: #171717;
+    background-color: #ffe0b8d9;
     border-radius: 25px;
     transition: .4s ease-in-out;
+    transform-style: preserve-3d; /* Add 3D effect */
+    perspective: 1000px; /* Set perspective for 3D effect */
+    box-shadow: 12px rgba(0, 0, 0, 1);
 }
 
     .custom-form:hover {
         transform: scale(1.05);
-        border: 1px solid black;
+        border: 1px solid #47a195;
+        box-shadow: 12px rgba(0, 0, 0, 1);
     }
 
 #custom-heading {
     text-align: center;
     margin: 2em;
-    color: rgb(255, 255, 255);
+    color: black;
     font-size: 1.2em;
 }
 
@@ -183,16 +199,15 @@ body {
     padding: 0.6em;
     border: none;
     outline: none;
-    color: white;
-    background-color: #171717;
-
-    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+    color: black;
+    background-color: #ffe0b8d9;
+    box-shadow: inset 2px 5px 10px rgb(0, 0, 0, 0.5);
 }
 
 .custom-input-icon {
     height: 1.3em;
     width: 1.3em;
-    fill: white;
+    fill: black;
 }
 
 .custom-input-field {
@@ -200,7 +215,7 @@ body {
     border: none;
     outline: none;
     width: 100%;
-    color: #d3d3d3;
+    color: black;
 }
 
 .custom-form .custom-btn {
@@ -220,7 +235,7 @@ body {
     border: none;
     outline: none;
     transition: .4s ease-in-out;
-    background-color: #252525;
+    background-color: #47a195;
     color: white;
 }
 
@@ -237,7 +252,7 @@ body {
     border: none;
     outline: none;
     transition: .4s ease-in-out;
-    background-color: #252525;
+    background-color: #47a195;
     color: white;
 }
 
@@ -253,7 +268,7 @@ body {
     border: none;
     outline: none;
     transition: .4s ease-in-out;
-    background-color: #252525;
+    background-color: #47a195;
     color: white;
 }
 
@@ -416,6 +431,7 @@ container {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
+background-color: rgb(64, 192, 87);
 }
 
     .product-details p {

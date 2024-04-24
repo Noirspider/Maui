@@ -25,4 +25,12 @@
     <Folder Include="ModelsBinder\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Views\Ordine\Create.cshtml" />
+    <None Include="Views\Ordine\Delete.cshtml" />
+    <None Include="Views\Ordine\Details.cshtml" />
+    <None Include="Views\Ordine\Edit.cshtml" />
+    <None Include="Views\Ordine\Index.cshtml" />
+  </ItemGroup>
+
 </Project>

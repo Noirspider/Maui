@@ -10,8 +10,7 @@ namespace Maui.Data
         public virtual DbSet<Utente> Utente { get; set; }
         public virtual DbSet<Prodotto> Prodotto { get; set; }
         public virtual DbSet<ProdottoAcquistato> ProdottoAcquistato { get; set; }
-        public virtual DbSet<Ordine> Ordine { get; set; }
-
+        public virtual DbSet<Ordine> Ordini { get; set; } // Corrected DbSet name
 
     }
 

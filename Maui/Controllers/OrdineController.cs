@@ -8,32 +8,52 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Maui.Controllers
 {
-    [Authorize(Roles = UserRole.ADMIN)]
+    
     public class OrdineController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext Dbcontext;
 
         public OrdineController(ApplicationDbContext context)
         {
-            _context = context;
+            Dbcontext = context;
         }
 
         // GET: Ordine
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Ordine.Include(o => o.Utente);
-            return View(await applicationDbContext.ToListAsync());
+            try
+            {
+                Console.WriteLine("Inizio del metodo Index.");
+                var applicationDbContext = await Dbcontext.Ordine
+                    .Include(o => o.Utente)
+                    .ToListAsync();
+
+                if (!applicationDbContext.Any())
+                {
+                    Console.WriteLine("Non ci sono ordini nel database.");
+                    // Puoi decidere cosa fare in questo caso. Forse vuoi restituire una vista diversa,
+                    // o forse vuoi semplicemente passare la lista vuota alla vista e gestire il caso lì.
+                }
+
+                Console.WriteLine("Fine del metodo Index.");
+                return View(applicationDbContext);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Si è verificato un errore durante l'esecuzione del metodo Index: {ex}");
+                throw;
+            }
         }
 
         public async Task<IActionResult> ToggleIsEvaso(int id)
         {
-            var ordine = await _context.Ordine.FindAsync(id);
+            var ordine = await Dbcontext.Ordine.FindAsync(id);
 
             if (ordine != null)
             {
                 ordine.IsEvaso = !ordine.IsEvaso;
-                _context.Update(ordine);
-                await _context.SaveChangesAsync();
+                Dbcontext.Update(ordine);
+                await Dbcontext.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
@@ -46,7 +66,7 @@ namespace Maui.Controllers
                 return NotFound();
             }
 
-            var ordine = await _context
+            var ordine = await Dbcontext
                 .Ordine.Include(o => o.Utente)
                 .FirstOrDefaultAsync(m => m.IdOrdine == id);
             if (ordine == null)
@@ -60,7 +80,7 @@ namespace Maui.Controllers
         // GET: Ordine/Create
         public IActionResult Create()
         {
-            ViewData["IdUtente"] = new SelectList(_context.Utente, "IdUtente", "Username");
+            ViewData["IdUtente"] = new SelectList(Dbcontext.Utente, "IdUtente", "Username");
             return View();
         }
 
@@ -76,12 +96,12 @@ namespace Maui.Controllers
             ModelState.Remove("ProdottoAcquistato");
             if (ModelState.IsValid)
             {
-                _context.Add(ordine);
-                await _context.SaveChangesAsync();
+                Dbcontext.Add(ordine);
+                await Dbcontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdUtente"] = new SelectList(
-                _context.Utente,
+                Dbcontext.Utente,
                 "IdUtente",
                 "Password",
                 ordine.IdUtente
@@ -97,13 +117,13 @@ namespace Maui.Controllers
                 return NotFound();
             }
 
-            var ordine = await _context.Ordine.FindAsync(id);
+            var ordine = await Dbcontext.Ordine.FindAsync(id);
             if (ordine == null)
             {
                 return NotFound();
             }
             ViewData["IdUtente"] = new SelectList(
-                _context.Utente,
+                Dbcontext.Utente,
                 "IdUtente",
                 "Password",
                 ordine.IdUtente
@@ -131,8 +151,8 @@ namespace Maui.Controllers
             {
                 try
                 {
-                    _context.Update(ordine);
-                    await _context.SaveChangesAsync();
+                    Dbcontext.Update(ordine);
+                    await Dbcontext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -148,12 +168,12 @@ namespace Maui.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdUtente"] = new SelectList(
-                _context.Utente,
+                Dbcontext.Utente,
                 "IdUtente",
                 "Username",
                 ordine.IdUtente
             );
-            return View();
+            return View(ordine);
         }
 
         // GET: Ordine/Delete/5
@@ -164,7 +184,7 @@ namespace Maui.Controllers
                 return NotFound();
             }
 
-            var ordine = await _context
+            var ordine = await Dbcontext
                 .Ordine.Include(o => o.Utente)
                 .FirstOrDefaultAsync(m => m.IdOrdine == id);
             if (ordine == null)
@@ -180,19 +200,19 @@ namespace Maui.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ordine = await _context.Ordine.FindAsync(id);
+            var ordine = await Dbcontext.Ordine.FindAsync(id);
             if (ordine != null)
             {
-                _context.Ordine.Remove(ordine);
+                Dbcontext.Ordine.Remove(ordine);
             }
 
-            await _context.SaveChangesAsync();
+            await Dbcontext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrdineExists(int id)
         {
-            return _context.Ordine.Any(e => e.IdOrdine == id);
+            return Dbcontext.Ordine.Any(e => e.IdOrdine == id);
         }
     }
 }
