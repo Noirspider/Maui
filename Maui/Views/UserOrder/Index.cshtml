@@ -1,63 +1,99 @@
-﻿@using Newtonsoft.Json;
-@model IEnumerable<Maui.Models.CartItem>
-@{
-    ViewData["Title"] = "User Order";
-}
+﻿    @using Newtonsoft.Json;
+    @using Maui.Models;
+    @using System.Linq;
+    @using System.Security.Claims
+    @model IEnumerable<Maui.Models.CartItem>
+    @{
+        ViewData["Title"] = "User Order";
+    }
 
-<div class="divform">
-    <main>
-        <div class="container">
-            <div class="row" id="listaProdotti">
-                <!-- Le card dei prodotti verranno aggiunte qui dinamicamente -->
+    <div class="divform">
+        <main>
+            <div class="container">
+                <!--
+                <div id="filterOptions">
+                    <h5>Birrificio</h5>
+                    <div id="breweryCheckboxes">
+                        Le checkbox dei birrifici verranno aggiunte qui dinamicamente
+                    </div>
+                    <h5>Stile</h5>
+                    <div id="styleCheckboxes">
+                         Le checkbox degli stili verranno aggiunte qui dinamicamente 
+                    </div>
+                </div>
+                -->
+                <div class="row" id="listaProdotti">
+                    <!-- Le card dei prodotti verranno aggiunte qui dinamicamente -->
+                </div>
             </div>
-        </div>
-    </main>
-</div>
+        </main>
+    </div>
 
+    @section Scripts {
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            const listaProdotti = $('#listaProdotti');
+            const breweryCheckboxes = $('#breweryCheckboxes');
+            const styleCheckboxes = $('#styleCheckboxes');
 
-@section Scripts {
-    <script>
-        async function FetchAddToCartSession(idProdotto, quantity) {
-            try {
-                const url = `UserOrder/FetchAddToCartSession?id=${idProdotto}&quantity=${quantity}`;
-                const response = await fetch(url);
-                if (response.ok) {
-                    location.reload();
-                } else if (response.status == 400) {
-                    alert('Non ci sono abbastanza birre in magazzino.');
+            async function FetchAddToCartSession(idProdotto, quantity) {
+                try {
+                    const url = `UserOrder/FetchAddToCartSession?id=${idProdotto}&quantity=${quantity}`;
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        location.reload();
+                    } else if (response.status == 400) {
+                        alert('Non ci sono abbastanza birre in magazzino.');
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
             }
-        }
 
-        async function FetchRemoveFromCartSession(idProdotto) {
-            try {
-                const response = await fetch('UserOrder/FetchRemoveFromCartSession/' + idProdotto);
-                if (response.ok) {
-                    location.reload();
+            async function FetchRemoveFromCartSession(idProdotto) {
+                try {
+                    const response = await fetch('UserOrder/FetchRemoveFromCartSession/' + idProdotto);
+                    if (response.ok) {
+                        location.reload();
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
             }
-        }
 
-        $(document).ready(function () {
+            function createCheckboxes(data, container) {
+                container.empty();
+
+                data.forEach(item => {
+                    const checkbox = $('<input>').attr('type', 'checkbox').val(item);
+                    const label = $('<label>').text(item).prepend(checkbox);
+
+                    container.append(label);
+                });
+            }
+
             async function FetchListaProdotti() {
+                // Fetch unique breweries and styles
+                const filterResponse = await fetch('Prodottoes/GetUniqueBreweriesAndStyles');
+                const { breweries, styles } = await filterResponse.json();
+
+                createCheckboxes(breweries, breweryCheckboxes);
+                createCheckboxes(styles, styleCheckboxes);
+
+                // Fetch products
                 const response = await fetch('UserOrder/FetchListaProdotti');
                 const data = await response.json();
-                console.log(data);
 
-                $('#listaProdotti').empty(); // Clear the existing content
+                listaProdotti.empty(); // Clear the existing content
 
                 data.forEach(product => {
-                    const card = $('<div>').addClass('col-md-3 d-flex justify-content-between card shadow ');
+                    const card = $('<div>').addClass('col-md-3 d-flex justify-content-between card shadow ').data('idProdotto', product.idProdotto);
 
                     const link = $('<a>').attr('href', 'UserOrder/Details/' + product.idProdotto);
                     const img = $('<img>').attr('src', product.imgProdotto).addClass('img-fix card-img-top img-product').attr('alt', '...');
                     link.append(img);
                     card.append(link);
-                    
+
                     const cardBody = $('<div>').addClass('card-body');
                     card.append(cardBody);
 
@@ -73,19 +109,17 @@
                     cardBody.append(price);
 
                     //Aggiungi
-                    // const buttonAdd = $('<button>').addClass('btn btn-primary m-1').text('Aggiungi');
                     const buttonAdd = $('<button>').addClass('AddBeerButton').text('Aggiungi');
-
 
                     //Stile bottone
                     const style = $('<p>').addClass('card-text').text('Stile: ' + product.stile);
                     cardBody.append(style);
 
-//Birrificio
+                    //Birrificio
                     const brewery = $('<p>').addClass('card-text').text('Birrificio: ' + product.birrificio);
                     cardBody.append(brewery);
 
-//Quantità
+                    //Quantità
                     const quantityInput = $('<select>').addClass('form-select-beer');
                     for (let i = 1; i <= 6; i++) {
                         quantityInput.append($('<option>').attr('value', i).text(i));
@@ -95,24 +129,41 @@
                     //Rimuovi
                     const buttonRemove = $('<button>').addClass('d-none').text('Rimuovi');
 
-                    //Aggiungi e rimuovi
-                    buttonAdd.on('click', async function () {
-                        const quantity = quantityInput.val();
-                        FetchAddToCartSession(product.idProdotto, quantity);
-                    });
-                    buttonRemove.on('click', async function () {
-                        await FetchRemoveFromCartSession(product.idProdotto);
-                    });
-
                     cardBody.append(buttonAdd);
                     cardBody.append(buttonRemove);
 
-                    $('#listaProdotti').append(card);
+                    listaProdotti.append(card);
                 });
             }
 
-            FetchListaProdotti();
-        });
+            // Delegate click events
+            listaProdotti.on('click', '.AddBeerButton', async function () {
+                const card = $(this).closest('.card');
+                const idProdotto = card.data('idProdotto');
+                const quantity = card.find('.form-select-beer').val();
+                FetchAddToCartSession(idProdotto, quantity);
+            });
 
-    </script>
-}
+            listaProdotti.on('click', '.RemoveBeerButton', async function () {
+                const idProdotto = $(this).closest('.card').data('idProdotto');
+                FetchRemoveFromCartSession(idProdotto);
+            });
+
+            // Aggiungi questo per filtrare i prodotti quando una checkbox viene selezionata
+            $('#filterOptions').on('change', 'input[type="checkbox"]', function () {
+                const selectedBreweries = breweryCheckboxes.find('input:checked').map(function () { return this.value; }).get();
+                const selectedStyles = styleCheckboxes.find('input:checked').map(function () { return this.value; }).get();
+
+                listaProdotti.find('.card').each(function () {
+                    const productBrewery = $(this).find('.card-text:contains("Birrificio:")').text().split(': ')[1];
+                    const productStyle = $(this).find('.card-text:contains("Stile:")').text().split(': ')[1];
+
+                    $(this).toggle(selectedBreweries.includes(productBrewery) && selectedStyles.includes(productStyle));
+                });
+            });
+
+            $(document).ready(function () {
+                FetchListaProdotti();
+            });
+        </script>
+    }

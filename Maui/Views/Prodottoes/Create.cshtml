@@ -4,76 +4,79 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Nuovo Prodotto</h1>
 
-<h4>Prodotto</h4>
+
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row BO-input-container">
+    <div class="col-md-6">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="NomeProdotto" class="control-label"></label>
-                <input asp-for="NomeProdotto" class="form-control" />
+                <label asp-for="NomeProdotto" class="BO-label"></label>
+                <input asp-for="NomeProdotto" class="form-control BO-input" />
                 <span asp-validation-for="NomeProdotto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImgProdotto" class="control-label"></label>
-                <input asp-for="ImgProdotto" class="form-control"/>
+                <label asp-for="ImgProdotto" class="BO-label"></label>
+                <input asp-for="ImgProdotto" class="form-control BO-input"/>
                 <span asp-validation-for="ImgProdotto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PrezzoProdotto" class="control-label"></label>
-                <input asp-for="PrezzoProdotto" class="form-control" type="text" />
+                <label asp-for="PrezzoProdotto" class="BO-label"></label>
+                <input asp-for="PrezzoProdotto" class="form-control BO-input" type="text" />
                 <span asp-validation-for="PrezzoProdotto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="QuantitaProdotto" class="control-label"></label>
-                <input asp-for="QuantitaProdotto" class="form-control" />
+                <label asp-for="QuantitaProdotto" class="BO-label"></label>
+                <input asp-for="QuantitaProdotto" class="form-control BO-input" />
                 <span asp-validation-for="QuantitaProdotto" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Stile" class="control-label"></label>
-                <input asp-for="Stile" class="form-control" />
+                <label asp-for="Stile" class="BO-label"></label>
+                <input asp-for="Stile" class="form-control BO-input" />
                 <span asp-validation-for="Stile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Descrizione" class="control-label"></label>
-                <input asp-for="Descrizione" class="form-control" />
+                <label asp-for="Descrizione" class="BO-label"></label>
+                <input asp-for="Descrizione" class="form-control BO-input" />
                 <span asp-validation-for="Descrizione" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Volume" class="control-label"></label>
-                <input asp-for="Volume" class="form-control" />
+                <label asp-for="Volume" class="BO-label"></label>
+                <input asp-for="Volume" class="form-control BO-input" />
                 <span asp-validation-for="Volume" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Gradazione" class="control-label"></label>
-                <input asp-for="Gradazione" class="form-control" />
+                <label asp-for="Gradazione" class="BO-label"></label>
+                <input asp-for="Gradazione" class="form-control BO-input" />
                 <span asp-validation-for="Gradazione" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Birrificio" class="control-label"></label>
-                <input asp-for="Birrificio" class="form-control" />
+                <label asp-for="Birrificio" class="BO-label"></label>
+                <input asp-for="Birrificio" class="form-control BO-input" />
                 <span asp-validation-for="Birrificio" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Nazione" class="control-label"></label>
-                <input asp-for="Nazione" class="form-control" />
+                <label asp-for="Nazione" class="BO-label"></label>
+                <input asp-for="Nazione" class="form-control BO-input" />
                 <span asp-validation-for="Nazione" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group my-2">
+                <input type="submit" value="Create" class="btn BOP-btn-verde " />
             </div>
             
             <div asp-validation-summary="All" class="text-danger"></div>
-
         </form>
     </div>
+
+    <div class="col-md-6">
+        <img class="BO-img" src="~/img/Birre2.jpg"/>
+        </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-danger" >Torna Indietro</a>
 </div>
 
 @section Scripts {

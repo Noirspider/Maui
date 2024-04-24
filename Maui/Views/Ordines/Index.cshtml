@@ -4,56 +4,39 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Elenco Ordini</h1>  <a asp-action="Create" class="btn BOP-btn-verde BOP-btn">Aggiungi nuovo ordine</a>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IndirizzoDiConsegna)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataOrdine)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsEvaso)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nota)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Utente)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IndirizzoDiConsegna)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataOrdine)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsEvaso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nota)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Utente.Password)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdOrdine">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdOrdine">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdOrdine">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+    @foreach (var item in Model)
+    {
+        <div class="BOP-card">
+            <div class="row BOP-row">
+                <h5 class="card-title BOP-card-title"><b>Numero Ordine:</b> @Html.DisplayFor(modelItem => item.IdOrdine)</h5>
+                <div class="col-md-4 BOP-col-md-4">
+                       @foreach (var prodotto in item.ProdottoAcquistato)
+                    {
+                        <p><b>Prodotto:</b> @prodotto.Prodotto.NomeProdotto</p>
+                        <p><b>Quantità:</b> @prodotto.Quantita</p>
+                    }
+                </div>
+                <div class="col-md-4 BOP-col-md-4">
+                    <div class="card-body BOP-card-body">
+                        <p class="card-text BOP-card-text"><b>Indirizzo:</b>@Html.DisplayFor(modelItem => item.IndirizzoDiConsegna)</p>
+                        <p class="card-text BOP-card-text"><b>Data Ordine:</b> @Html.DisplayFor(modelItem => item.DataOrdine)</p>
+                        <p class="card-text BOP-card-text"><b>IsEvaso:</b> @Html.DisplayFor(modelItem => item.IsEvaso)</p>
+                        <p class="card-text BOP-card-text"><b>Nota:</b> @Html.DisplayFor(modelItem => item.Nota)</p>
+                        <p class="card-text BOP-card-text"><b>Utente:</b> @Html.DisplayFor(modelItem => item.Utente.Password)</p>
+                    </div>
+                </div>
+                <div class="col-md-4 BOP-col-md-4">
+                    <a asp-action="Edit" asp-route-id="@item.IdOrdine" class="btn BOP-btn-verde BOP-btn">Edit</a>
+                    <br />
+                    <a asp-action="Details" asp-route-id="@item.IdOrdine" class="btn BOP-btn-sabbia BOP-btn">Details</a>
+                    <br />
+                    <a asp-action="Delete" asp-route-id="@item.IdOrdine" class="btn btn-danger BOP-btn">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

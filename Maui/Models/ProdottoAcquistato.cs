@@ -18,6 +18,9 @@ namespace Maui.Models
 
         [Required]
         public int Quantita { get; set; }
+        [NotMapped]
+        [ForeignKey("Prodotto")]
+        public string NomeProdotto { get; set; }
 
         public virtual Prodotto Prodotto { get; set; }
         public virtual Ordine Ordine { get; set; }

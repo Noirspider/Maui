@@ -159,5 +159,16 @@ namespace Maui.Controllers
         {
             return _context.Prodotto.Any(e => e.IdProdotto == id);
         }
+
+        // Aggiungi questo metodo nel tuo controller ProdottoesController
+        [HttpGet]
+        public async Task<IActionResult> GetUniqueBreweriesAndStyles()
+        {
+            var breweries = await _context.Prodotto.Select(p => p.Birrificio).Distinct().ToListAsync();
+            var styles = await _context.Prodotto.Select(p => p.Stile).Distinct().ToListAsync();
+
+            return Ok(new { breweries, styles });
+        }
+
     }
 }

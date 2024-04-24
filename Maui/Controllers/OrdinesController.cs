@@ -22,7 +22,10 @@ namespace Maui.Controllers
         // GET: Ordines
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Ordine.Include(o => o.Utente);
+            var applicationDbContext = _context.Ordine
+                .Include(o => o.Utente)
+                .Include(o => o.ProdottoAcquistato)
+                    .ThenInclude(pa => pa.Prodotto);
             return View(await applicationDbContext.ToListAsync());
         }
 
