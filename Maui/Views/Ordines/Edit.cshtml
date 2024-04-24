@@ -28,10 +28,11 @@
                 <input asp-for="DataOrdine" class="form-control" />
                 <span asp-validation-for="DataOrdine" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <input class="form-check-input" asp-for="IsEvaso" />
-                <label class="form-check-label" for="IsEvaso">@Html.DisplayNameFor(model => model.IsEvaso)</label>
-            </div>
+        <div class="form-group form-check">
+    <input type="hidden" asp-for="IsEvaso" value="false" />
+    <input class="form-check-input" asp-for="IsEvaso" value="true" />
+    <label class="form-check-label" for="IsEvaso">@Html.DisplayNameFor(model => model.IsEvaso)</label>
+</div>
             <div class="form-group">
                 <label asp-for="Nota" class="control-label"></label>
                 <input asp-for="Nota" class="form-control" />

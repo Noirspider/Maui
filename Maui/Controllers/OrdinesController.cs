@@ -145,19 +145,29 @@ namespace Maui.Controllers
         }
 
         // POST: Ordines/Delete/5
+        // POST: Ordines/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ordine = await _context.Ordine.FindAsync(id);
+            var ordine = await _context.Ordine
+                .Include(o => o.ProdottoAcquistato)
+                .FirstOrDefaultAsync(m => m.IdOrdine == id);
+
             if (ordine != null)
             {
+                // Remove all related ProdottoAcquistato
+                _context.ProdottoAcquistato.RemoveRange(ordine.ProdottoAcquistato);
+
+                // Then remove the Ordine
                 _context.Ordine.Remove(ordine);
+
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool OrdineExists(int id)
         {

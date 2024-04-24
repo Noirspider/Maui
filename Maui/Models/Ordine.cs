@@ -23,7 +23,7 @@ namespace Maui.Models
         public DateTime DataOrdine { get; set; }
 
         [Required]
-        public bool IsEvaso { get; set; } = false;
+        public bool IsEvaso { get; set; }
         public string? Nota { get; set; }
 
         [NotMapped]
