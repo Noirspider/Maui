@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Maui.Models.Ordine>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IndirizzoDiConsegna)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataOrdine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsEvaso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nota)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Utente)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IndirizzoDiConsegna)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataOrdine)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEvaso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nota)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Utente.Password)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdOrdine">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdOrdine">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdOrdine">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

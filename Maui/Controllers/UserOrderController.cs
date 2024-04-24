@@ -174,7 +174,7 @@ namespace Maui.Controllers
             if (ModelState.IsValid)         // verifica ex composizione
             {
                 // Crea un nuovo ordine
-                _db.Ordini.Add(ordine);
+                _db.Ordine  .Add(ordine);
                 await _db.SaveChangesAsync();
 
                 // Deserializza il carrello
@@ -249,7 +249,7 @@ namespace Maui.Controllers
             // Ottieni l'ordine dal database
             var ordine = await _db                           // qui c'è l'errore 
                // Seleziona la tabella degli ordini
-                .Ordini.Include(o => o.Utente)
+                .Ordine.Include(o => o.Utente)
                 // Seleziona i campi necessari
                 .Include(o => o.ProdottoAcquistato)
                 .ThenInclude(p => p.Prodotto)
@@ -310,7 +310,7 @@ namespace Maui.Controllers
                         return View("Error");
                     }
 
-                    var ordiniConDettagli = await _db.Ordini
+                    var ordiniConDettagli = await _db.Ordine
                         .Include(o => o.Utente)
                         .Include(o => o.ProdottoAcquistato)
                         .ThenInclude(p => p.Prodotto)

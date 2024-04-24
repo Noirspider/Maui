@@ -1,22 +1,20 @@
 ﻿@model Maui.Models.Ordine
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
-<div class="divform">
-<h1>modifica ordini</h1>
+
+<h1>Create</h1>
 
 <h4>Ordine</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="IdOrdine" />
             <div class="form-group">
                 <label asp-for="IdUtente" class="control-label"></label>
-                <select asp-for="IdUtente" class="form-control" asp-items="ViewBag.IdUtente"></select>
-                <span asp-validation-for="IdUtente" class="text-danger"></span>
+                <select asp-for="IdUtente" class ="form-control" asp-items="ViewBag.IdUtente"></select>
             </div>
             <div class="form-group">
                 <label asp-for="IndirizzoDiConsegna" class="control-label"></label>
@@ -39,7 +37,7 @@
                 <span asp-validation-for="Nota" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -48,7 +46,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

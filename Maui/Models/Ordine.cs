@@ -24,7 +24,7 @@ namespace Maui.Models
 
         [Required]
         public bool IsEvaso { get; set; } = false;
-        public string Nota { get; set; }
+        public string? Nota { get; set; }
 
         [NotMapped]
         public decimal PrezzoTotale
