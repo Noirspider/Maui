@@ -9,44 +9,46 @@
             decimal total = 0;
             foreach (var item in Model)
             {
-                <div class="card me-3 col-9 mb-3">
-                    <div class="row">
-                        <div class="col-3">
-                            <img src="@item.ImgProdotto" class="img-fix card-img-top" alt="...">
-                        </div>
-                        <div class="card-body col-6">
-                            <h5 class="card-title">@item.NomeProdotto</h5>
-                            <p class="card-text">Prezzo: @item.PrezzoProdotto €</p>
-                            <p class="card-text">Totale: @((item.PrezzoProdotto * item.Quantita).ToString("F2")) €</p>
-                            <p class="card-text">Quantità: @item.Quantita</p>
-                            
-                        </div>
-                        <div class="col-3 d-flex flex-column justify-content-center align-items-center">
-                            <select id="quantity-@item.IdProdotto" onchange="updateQuantity(@item.IdProdotto)" class=" form-select-beer my-2">
-                                @for (int i = 1; i <= 6; i++)
+                <div class="order-card row">
+                    <div class="order-details col-6">
+                        <h5 class="order-id">Prodotto ID: @item.IdProdotto</h5>
+                        <p class="order-info">
+                            <span class="info-label"><b>Nome Prodotto:</b></span> @item.NomeProdotto <br />
+                            <span class="info-label"><b>Prezzo:</b></span> @item.PrezzoProdotto € <br />
+                            <span class="info-label"><b>Quantità:</b></span> @item.Quantita <br />
+                            <span class="info-label"><b>Totale:</b></span> @((item.PrezzoProdotto * item.Quantita).ToString("F2")) € <br />
+                        </p>
+                    </div>
+                    <div class="ordered-products col-6">
+                        <img src="@item.ImgProdotto" class="Cart-img img-fix card-img-top" alt="...">
+                        <select id="quantity-@item.IdProdotto" onchange="updateQuantity(@item.IdProdotto)" class=" form-select-beer my-2">
+                            @for (int i = 1; i <= 6; i++)
+                            {
+                                if (i == item.Quantita)
                                 {
-                                    if (i == item.Quantita)
-                                    {
-                                        <option selected value="@i">@i</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="@i">@i</option>
-                                    }
+                                    <option selected value="@i">@i</option>
                                 }
-                            </select>
-                            <button class="btn btn-danger text-center" onclick="removeFromCart(@item.IdProdotto)">X</button>
-                        </div>
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
+                        <button class="btn btn-danger text-center" onclick="removeFromCart(@item.IdProdotto)">Rimuovi</button>
                     </div>
                 </div>
                 total += item.PrezzoProdotto * item.Quantita;
             }
-            <div class="mt-3 col-2">
-                <h4 class="text-center mb-3">Totale: @total €</h4>
-                <form method="post" asp-action="RiepilogoOrdine">
-                    <input type="submit" value="ORDINA" class="btn btn-success" />
-                </form>
-            </div>
+            
+                <div class="order-card Cart-Total-Card card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center mb-3">Totale: @total €</h4>
+                        <form method="post" asp-action="RiepilogoOrdine">
+                            <input type="submit" value="ORDINA" class="btn btn-success" />
+                        </form>
+                    </div>
+                </div>
+            
         }
         else
         {

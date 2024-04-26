@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Contatti";
+}
+
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="info-custom-h1">Contatti</h1>
+            <div class="info-custom-p">
+                <h2 class="info-custom-h2">Informazioni di contatto</h2>
+                <p>Indirizzo: Via Maui, 123</p>
+                <p>Telefono: 0123456789</p>
+                <p>Email: info@example.com</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-custom-p">
+                <h2 class="info-custom-h2">Invia una comunicazione</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="nome">Nome:</label>
+                        <input type="text" class="form-control info-custom-input" id="nome" name="nome">
+                    </div>
+                    <div class="form-group">
+                        <label for="cognome">Cognome:</label>
+                        <input type="text" class="form-control info-custom-input" id="cognome" name="cognome">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control info-custom-input" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="oggetto">Oggetto:</label>
+                        <select class="form-control info-custom-select" id="oggetto" name="oggetto">
+                            <option value="prenotazione">Prenotazione Tavolo</option>
+                            <option value="supporto">Supporto Ordini</option>
+                            <option value="informazioni">Informazioni</option>
+                            <option value="collaborazioni">Collaborazioni</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="messaggio">Messaggio:</label>
+                        <textarea class="form-control info-custom-textarea" id="messaggio" name="messaggio" rows="4" cols="50"></textarea>
+                    </div>
+                    <button type="submit" class="btn BOP-btn-verde my-1">Invia</button>
+                </form>
+            </div>
+        </div>
+    </div>  
+            <div>
+                <h3 class="info-custom-h3">Dove Trovarci</h3>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7453.500461583825!2d-156.69861820353262!3d20.922366169915332!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x79552b7f909d4e7d%3A0x199fcfe8568ae4bd!2sMaui%20Brewing%20Co.%20K%C4%81&#39;anapali!5e0!3m2!1sit!2sit!4v1714036414740!5m2!1sit!2sit" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+    
+</div>
+
+@section Scripts {
+    <script>
+        function initMap() {
+            // Create a map object and specify the DOM element for display
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 40.7128, lng: -74.0060 }, // Set the initial center position of the map
+                zoom: 12 // Set the initial zoom level of the map
+            });
+
+            // Create a marker and set its position
+            var marker = new google.maps.Marker({
+                position: { lat: 40.7128, lng: -74.0060 }, // Set the position of the marker
+                map: map, // Set the map to display the marker
+                title: 'My Location' // Set the title of the marker
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+}
+
+     

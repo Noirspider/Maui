@@ -32,8 +32,23 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+     display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
+footer {
+    /*background-color: #47a195;
+    color: white;
+*/
+    background-color: #ffe0b8;
+    color: black;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: auto;
+}
+
 .img-fix{
   width: 200px;
   height: 200px;
@@ -402,7 +417,21 @@ CartCard {
     font-size: 16px;
     font-weight: bold;
 }
- /*HOME*/
+.Cart-img{
+    width: 30%;
+    height: auto;
+}
+.Cart-Total-Card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    width: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    filter: drop-shadow(0 0 0.75rem #47a195);
+    margin-top: 10px;
+}
+/*HOME*/
 #BgLogo {
     background-image: url(/img/sfondo3.jpg);
     background-size: cover;
@@ -598,3 +627,149 @@ width: 40vw;
         margin-left: 10px;
 
     }
+
+
+
+
+    /*INFO PAGE*/
+
+/* Stile personalizzato per gli elementi con classi personalizzate */
+
+/* Stile per l'header dei titoli */
+.info-custom-h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Stile per l'header dei sottotitoli */
+.info-custom-h2 {
+    font-size: 24px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Stile per i paragrafi di informazioni */
+.info-custom-p {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+/* Stile per gli input dei form */
+.info-custom-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Stile per i select dei form */
+.info-custom-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Stile per le textarea dei form */
+.info-custom-textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Stile per il pulsante di invio del form */
+.info-custom-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Stile per l'iframe della mappa */
+.info-custom-iframe {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/*
+    COLORI:
+#47a195 - Verde acqua
+#ffe0b8 - SABBIA
+    #988062 - Marrone
+*/
+
+
+
+/*Chi siamo page*/
+.Cart-Modulo-box {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    background-color: rgba(255, 224, 184, 0.7);
+    /*       filter: drop-shadow(0 0 0.75rem #47a195);*/
+    animation: slideInFromBottom 0.5s ease-in-out;
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.Cart-Modulo-input {
+width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+}
+
+
+/*
+    COLORI:
+#47a195 - Verde acqua
+#ffe0b8 - SABBIA
+    #988062 - Marrone
+*/
+
+
+.Thanks-page {
+/*    background-image: url(https://i.pinimg.com/564x/69/28/08/692808eeddc36728af5c1b2ba9298b65.jpg);*/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+/*    color: #ffe0b8;*/
+font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+/*        color: #47a195;*/
+    text-align: center;
+}
+    .Thanks-page div {
+        padding: 20px;
+        /*    border-radius: 10px;*/
+        animation: slideInFromBottom 0.5s ease-in-out;
+    }
+
+.Bordo {
+    background-image: url(https://i.pinimg.com/564x/ea/19/13/ea1913354326dff711561457e5eb88f8.jpg);
+    filter: grayscale(100%); /* Aggiungi il filtro di scala di grigi all'immagine */
+    margin: 0;
+}

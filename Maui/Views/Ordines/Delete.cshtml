@@ -4,48 +4,52 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Ordine</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IndirizzoDiConsegna)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IndirizzoDiConsegna)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DataOrdine)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DataOrdine)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsEvaso)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsEvaso)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nota)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nota)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Utente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Utente.Password)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdOrdine" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="BOP-card">
+                <h1 class="card-title BOP-card-title">Elimina Ordine</h1>
+                <h3 class="card-text BOP-card-text">Sei sicuro di voler eliminare quest'ordine?</h3>
+                <hr />
+                <dl class="row">
+                    <dt class = "col-sm-4">
+                        @Html.DisplayNameFor(model => model.IndirizzoDiConsegna)
+                    </dt>
+                    <dd class = "col-sm-8">
+                        @Html.DisplayFor(model => model.IndirizzoDiConsegna)
+                    </dd>
+                    <dt class = "col-sm-2">
+                        @Html.DisplayNameFor(model => model.DataOrdine)
+                    </dt>
+                    <dd class = "col-sm-10">
+                        @Html.DisplayFor(model => model.DataOrdine)
+                    </dd>
+                    <dt class = "col-sm-2">
+                        @Html.DisplayNameFor(model => model.IsEvaso)
+                    </dt>
+                    <dd class = "col-sm-10">
+                        @Html.DisplayFor(model => model.IsEvaso)
+                    </dd>
+                    <dt class = "col-sm-2">
+                        @Html.DisplayNameFor(model => model.Nota)
+                    </dt>
+                    <dd class = "col-sm-10">
+                        @Html.DisplayFor(model => model.Nota)
+                    </dd>
+                    <dt class = "col-sm-2">
+                        @Html.DisplayNameFor(model => model.Utente)
+                    </dt>
+                    <dd class = "col-sm-10">
+                        @Html.DisplayFor(model => model.Utente.Password)
+                    </dd>
+                </dl>
+                
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="IdOrdine" />
+                    <input type="submit" value="Delete" class="btn btn-danger BOP-btn" /> 
+                    <a asp-action="Index" class="btn BOP-btn-verde BOP-btn">Torna agli ordini</a>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
