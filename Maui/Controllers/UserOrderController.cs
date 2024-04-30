@@ -62,17 +62,18 @@ namespace Maui.Controllers
         public IActionResult Index()
         {
             // Ottieni il carrello dalla sessione
-            var carrello = HttpContext.Session.GetString("Carrello");
-            // Se il carrello non è vuoto
-            if (!string.IsNullOrEmpty(carrello))
-            {
-                // Deserializza il carrello
-                var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
-                // Calcola il totale del carrello
-                return View(carrelloList);
-            }
-            // Se il carrello è vuoto, restituisci una lista vuota
-            return View(new List<CartItem>());
+            //var carrello = HttpContext.Session.GetString("Carrello");
+            //// Se il carrello non è vuoto
+            //if (!string.IsNullOrEmpty(carrello))
+            //{
+            //    // Deserializza il carrello
+            //    var carrelloList = JsonConvert.DeserializeObject<List<CartItem>>(carrello);
+            //    // Calcola il totale del carrello
+            //    return View(carrelloList);
+            //}
+            //// Se il carrello è vuoto, restituisci una lista vuota
+            //return View(new List<CartItem>());
+            return View();
         }
 
 

@@ -28,6 +28,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                     
                         @if (User.IsInRole(UserRole.ADMIN))
                         {
                             <li class="nav-item">
@@ -35,15 +36,13 @@
                             </li>
                         }
                         <li class="flex-grow-1"></li>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark ms-auto" asp-area="" asp-controller="Info" asp-action="ChiSiamo">Chi Siamo</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark ms-auto" asp-area="" asp-controller="Info" asp-action="Contatti">Contatti</a>
-                            </li>
-                            <li class="nav-item">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark ms-auto" asp-area="" asp-controller="Info" asp-action="ChiSiamo">Chi Siamo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark ms-auto" asp-area="" asp-controller="Info" asp-action="Contatti">Contatti</a>
+                        </li>
+                        <li class="nav-item">
                                 <a class="nav-link text-dark ms-auto  me-3" asp-area="" asp-controller="UserOrder" asp-action="index">Birre</a>
                             </li>
                             <li>
@@ -60,6 +59,11 @@
                                     </a>
                                 </li>
                             </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                        
+                            
                               
                            <li class="nav-item dropdown">
                                <a class="nav-link dropdown-toggle text-dark ms-auto me-3" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

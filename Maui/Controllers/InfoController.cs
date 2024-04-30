@@ -13,5 +13,9 @@ namespace Maui.Controllers
         {
             return View();
         }
+        public IActionResult Me()
+        {
+            return View();
+        }
     }
 }

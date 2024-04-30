@@ -20,7 +20,7 @@
                         </p>
                     </div>
                     <div class="ordered-products col-6">
-                        <img src="@item.ImgProdotto" class="Cart-img img-fix card-img-top" alt="...">
+                        <img src="@item.ImgProdotto" class="Cart-img img-fix card-img-top w-25" alt="...">
                         <select id="quantity-@item.IdProdotto" onchange="updateQuantity(@item.IdProdotto)" class=" form-select-beer my-2">
                             @for (int i = 1; i <= 6; i++)
                             {
@@ -40,7 +40,13 @@
                 total += item.PrezzoProdotto * item.Quantita;
             }
             
-                <div class="order-card Cart-Total-Card card">
+
+            <div class="row">
+                <div class="col-6">
+                    
+</div>
+
+                <div class="order-card Cart-Total-Card card col-6">
                     <div class="card-body">
                         <h4 class="card-title text-center mb-3">Totale: @total €</h4>
                         <form method="post" asp-action="RiepilogoOrdine">
@@ -49,6 +55,7 @@
                     </div>
                 </div>
             
+</div>
         }
         else
         {

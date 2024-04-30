@@ -184,7 +184,8 @@ footer {
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 0.4em;
-    background-color: #ffe0b8d9;
+    background-color: rgb(255, 224, 184, 0.5);
+
     border-radius: 25px;
     transition: .4s ease-in-out;
     transform-style: preserve-3d; /* Add 3D effect */
@@ -435,6 +436,18 @@ CartCard {
 #BgLogo {
     background-image: url(/img/sfondo3.jpg);
     background-size: cover;
+    height: 80vh;
+    animation: moveBackground 60s infinite linear;
+}
+
+@keyframes moveBackground {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+   
 }
 
 
